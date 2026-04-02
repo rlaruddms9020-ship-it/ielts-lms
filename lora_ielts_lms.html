@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>IELTS LMS — Kate</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0e0e0e;
+    --surface: #1a1a1a;
+    --surface2: #242424;
+    --border: #2e2e2e;
+    --accent: #e04a2f;
+    --accent2: #f0a500;
+    --text: #f0ede8;
+    --muted: #7a7570;
+    --listening: #3a8c6e;
+    --speaking: #e07a2f;
+    --reading: #4a7abf;
+    --writing: #c94a8f;
+    --green: #4caf7d;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding-bottom: 80px;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 20px 20px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+
+  .logo {
+    font-family: 'DM Serif Display', serif;
+    font-size: 18px;
+    letter-spacing: 0.02em;
+  }
+
+  .logo span { color: var(--accent); }
+
+  .date-badge {
+    font-size: 12px;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 4px 10px;
+    border-radius: 20px;
+  }
+
+  /* PROGRESS BAR */
+  .progress-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .progress-track {
+    flex: 1;
+    height: 6px;
+    background: var(--border);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 3px;
+    transition: width 0.5s ease;
+  }
+
+  .progress-label {
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  .progress-count {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent2);
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 0;
+    padding: 16px 20px 0;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab {
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    white-space: nowrap;
+    transition: all 0.2s;
+  }
+
+  .tab.active {
+    color: var(--text);
+    border-bottom-color: var(--accent);
+  }
+
+  /* MAIN */
+  .main { padding: 20px; }
+
+  /* SECTION TITLE */
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    margin-bottom: 4px;
+  }
+
+  .section-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 20px;
+  }
+
+  /* MODULE CARD */
+  .module-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+
+  .module-card.done {
+    border-color: var(--green);
+    opacity: 0.75;
+  }
+
+  .module-header {
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    gap: 14px;
+    cursor: pointer;
+  }
+
+  .module-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: var(--accent);
+    min-width: 32px;
+  }
+
+  .module-card.done .module-num {
+    color: var(--green);
+  }
+
+  .module-info { flex: 1; }
+
+  .module-title {
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 5px;
+  }
+
+  .module-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .tag-listening { background: rgba(58,140,110,0.2); color: #5fc49a; }
+  .tag-speaking { background: rgba(224,122,47,0.2); color: #f0a060; }
+  .tag-reading { background: rgba(74,122,191,0.2); color: #7aaae0; }
+  .tag-writing { background: rgba(201,74,143,0.2); color: #e07ab0; }
+
+  .module-duration {
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .module-chevron {
+    font-size: 16px;
+    color: var(--muted);
+    transition: transform 0.2s;
+  }
+
+  .module-card.expanded .module-chevron {
+    transform: rotate(180deg);
+  }
+
+  /* MODULE BODY */
+  .module-body {
+    display: none;
+    border-top: 1px solid var(--border);
+    padding: 16px;
+  }
+
+  .module-card.expanded .module-body {
+    display: block;
+  }
+
+  .body-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+    margin-top: 14px;
+  }
+
+  .body-label:first-child { margin-top: 0; }
+
+  .body-text {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #ccc;
+  }
+
+  /* TASKS */
+  .task-list { display: flex; flex-direction: column; gap: 8px; margin-top: 6px; }
+
+  .task-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 12px;
+    background: var(--surface2);
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .task-check {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border);
+    border-radius: 6px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    font-size: 12px;
+  }
+
+  .task-item.checked .task-check {
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  .task-text {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--text);
+  }
+
+  .task-item.checked .task-text {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+
+  /* LESSON CONTENT */
+  .lesson-block {
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 14px;
+    margin-bottom: 10px;
+  }
+
+  .lesson-section-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent2);
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+  }
+
+  .lesson-text {
+    font-size: 13px;
+    line-height: 1.75;
+    color: #ccc;
+  }
+
+  .lesson-text b { color: var(--text); }
+
+  .paraphrase-table {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+
+  .pt-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    font-size: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .pt-row:last-child { border-bottom: none; }
+
+  .pt-row:first-child {
+    background: var(--border);
+    font-weight: 700;
+    font-size: 11px;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  .pt-q, .pt-a {
+    padding: 8px 10px;
+    line-height: 1.5;
+  }
+
+  .pt-q { border-right: 1px solid var(--border); color: #aaa; }
+  .pt-a { color: #5fc49a; }
+
+  /* ACTION BUTTONS */
+  .action-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .btn {
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .btn-primary {
+    background: var(--accent);
+    color: white;
+  }
+
+  .btn-secondary {
+    background: var(--surface2);
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn:active { transform: scale(0.97); }
+
+  /* FEEDBACK MODAL */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 200;
+    padding: 20px;
+    align-items: flex-end;
+  }
+
+  .modal-overlay.open {
+    display: flex;
+  }
+
+  .modal {
+    background: var(--surface);
+    border-radius: 20px 20px 16px 16px;
+    width: 100%;
+    max-height: 80vh;
+    overflow-y: auto;
+    padding: 24px;
+  }
+
+  .modal-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 20px;
+    margin-bottom: 6px;
+  }
+
+  .modal-sub {
+    font-size: 13px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .modal-textarea {
+    width: 100%;
+    min-height: 120px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    padding: 12px;
+    resize: none;
+    outline: none;
+    margin-bottom: 12px;
+  }
+
+  .modal-textarea:focus { border-color: var(--accent); }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  /* AI FEEDBACK */
+  .feedback-box {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin-top: 14px;
+    font-size: 13px;
+    line-height: 1.7;
+    color: #ddd;
+    display: none;
+  }
+
+  .feedback-box.visible { display: block; }
+
+  .feedback-loading {
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  .feedback-section-title {
+    font-weight: 600;
+    color: var(--accent2);
+    margin-top: 10px;
+    margin-bottom: 4px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* STATS TAB */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 32px;
+    color: var(--accent2);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* SKILL BARS */
+  .skill-row {
+    margin-bottom: 14px;
+  }
+
+  .skill-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+    font-size: 13px;
+  }
+
+  .skill-name { font-weight: 500; }
+  .skill-score { color: var(--accent2); font-weight: 600; }
+
+  .skill-bar {
+    height: 8px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .skill-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.6s ease;
+  }
+
+  /* WEEKLY REPORT TAB */
+  .report-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 18px;
+    margin-bottom: 14px;
+  }
+
+  .report-week {
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+
+  .report-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 17px;
+    margin-bottom: 10px;
+  }
+
+  .report-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+
+  .report-row:last-child { border-bottom: none; }
+
+  .report-key { color: var(--muted); }
+  .report-val { font-weight: 500; }
+
+  /* EMPTY STATE */
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--muted);
+  }
+
+  .empty-icon { font-size: 36px; margin-bottom: 10px; }
+  .empty-text { font-size: 14px; line-height: 1.6; }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    display: flex;
+    padding: 10px 0 20px;
+    z-index: 100;
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    cursor: pointer;
+    padding: 6px;
+    transition: opacity 0.2s;
+  }
+
+  .nav-icon { font-size: 20px; }
+  .nav-label { font-size: 10px; color: var(--muted); font-weight: 500; }
+  .nav-item.active .nav-label { color: var(--accent); }
+
+  /* PAGE */
+  .page { display: none; }
+  .page.active { display: block; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="logo">TIER ONE <span>ENGLISH</span></div>
+    <div class="date-badge" id="dateLabel">로딩중...</div>
+  </div>
+  <div class="progress-section">
+    <div class="progress-track">
+      <div class="progress-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <div class="progress-count" id="progressCount">0/11</div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('modules', this)">모듈</div>
+  <div class="tab" onclick="switchTab('stats', this)">실력</div>
+  <div class="tab" onclick="switchTab('report', this)">리포트</div>
+</div>
+
+<!-- MODULES PAGE -->
+<div class="page active" id="page-modules">
+  <div class="main">
+    <div class="section-title">11개 모듈</div>
+    <div class="section-sub">각 모듈 완료 후 ✓ 체크하세요</div>
+    <div id="moduleList"></div>
+  </div>
+</div>
+
+<!-- STATS PAGE -->
+<div class="page" id="page-stats">
+  <div class="main">
+    <div class="section-title">내 실력</div>
+    <div class="section-sub">과제 제출 후 업데이트하세요</div>
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-num" id="statModules">0</div>
+        <div class="stat-label">완료 모듈</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statTasks">0</div>
+        <div class="stat-label">완료 과제</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num" id="statDays">0</div>
+        <div class="stat-label">학습일수</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-num">6.5</div>
+        <div class="stat-label">목표 Band</div>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-bottom:16px">영역별 목표</div>
+    <div id="skillBars"></div>
+  </div>
+</div>
+
+<!-- REPORT PAGE -->
+<div class="page" id="page-report">
+  <div class="main">
+    <div class="section-title">주간 리포트</div>
+    <div class="section-sub">매주 기록을 남겨요</div>
+    <button class="btn btn-primary" style="width:100%;margin-bottom:16px" onclick="openReportModal()">+ 이번 주 리포트 작성</button>
+    <div id="reportList"></div>
+  </div>
+</div>
+
+<!-- FEEDBACK MODAL -->
+<div class="modal-overlay" id="feedbackModal">
+  <div class="modal">
+    <div class="modal-title" id="modalTitle">과제 피드백 받기</div>
+    <div class="modal-sub" id="modalSub">과제 내용을 붙여넣으세요</div>
+    <textarea class="modal-textarea" id="modalInput" placeholder="여기에 작성한 내용을 붙여넣으세요..."></textarea>
+    <div class="feedback-box" id="feedbackBox"></div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeModal()">닫기</button>
+      <button class="btn btn-primary" id="submitBtn" onclick="submitFeedback()">AI 피드백 받기</button>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT MODAL -->
+<div class="modal-overlay" id="reportModal">
+  <div class="modal">
+    <div class="modal-title">주간 리포트</div>
+    <div class="modal-sub">이번 주 학습을 기록해요</div>
+    <div class="body-label">완료한 모듈</div>
+    <textarea class="modal-textarea" id="reportModules" placeholder="예: 모듈 1, 2 완료" style="min-height:60px"></textarea>
+    <div class="body-label">잘한 점</div>
+    <textarea class="modal-textarea" id="reportGood" placeholder="예: 리스닝 패러프레이징 실력 향상" style="min-height:60px"></textarea>
+    <div class="body-label">약한 점 / 개선 포인트</div>
+    <textarea class="modal-textarea" id="reportWeak" placeholder="예: Task2 서론 아이디어 발상 느림" style="min-height:60px"></textarea>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" onclick="closeReportModal()">취소</button>
+      <button class="btn btn-primary" onclick="saveReport()">저장</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ==================== DATA ====================
+const MODULES = [
+  {
+    id: 1,
+    title: "OT 및 리스닝 모듈1",
+    skill: "listening",
+    tag: "Listening",
+    subtitle: "Cambridge 기출 Part1·2",
+    duration: "1:34:37",
+    content: `
+<div class="lesson-block">
+  <div class="lesson-section-title">📌 최근 IELTS 리스닝 시험 경향</div>
+  <div class="lesson-text">
+    최근 Cambridge 기출 기준으로 리스닝은 점점 <b>패러프레이징 난이도</b>가 높아지고 있어. 녹음에서 들리는 단어를 그대로 받아 적으면 오답이 되는 구조. 예를 들어 문제지에 "accommodation"이 나오면 녹음에서는 "place to stay" 혹은 "where they're living"으로 바꿔서 나와. 이걸 못 잡으면 들려도 틀려.
+    <br><br>
+    또한 <b>Part 1은 실생활 대화</b>(전화 예약, 등록, 문의)이고 <b>Part 2는 독백 형식</b>(투어 안내, 시설 소개, 행사 설명)으로 구성돼. 두 파트 모두 Form / Note / Table completion 유형이 자주 나와.
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-section-title">🎯 Part 1 완전 공략</div>
+  <div class="lesson-text">
+    <b>유형:</b> Form completion, Note completion<br>
+    <b>특징:</b> 두 사람의 대화. 이름·날짜·번호·주소·금액 같은 구체적 정보 받아쓰기.<br><br>
+    <b>핵심 전략 3가지:</b><br>
+    ① <b>미리 읽기 (Pre-reading)</b> — 문제 읽는 시간 30초 줄 때 반드시 빈칸 주변 키워드를 확인해. 빈칸 앞뒤 단어가 녹음에서 신호가 돼.<br>
+    ② <b>철자 주의</b> — 이름·도시명은 반드시 spelling out 해줘. 예: "That's M-A-R-T-I-N." 이때 놓치지 않도록 알파벳을 빠르게 받아적는 연습 필수.<br>
+    ③ <b>숫자/날짜 패턴</b> — 전화번호는 끊어서 말해줘 (0800 → "oh eight hundred"). 날짜는 "the 14th of March" 형식. 미리 형식 익혀놓기.
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-section-title">🎯 Part 2 완전 공략</div>
+  <div class="lesson-text">
+    <b>유형:</b> Multiple choice, Map/Plan labelling, Matching<br>
+    <b>특징:</b> 혼자 말하는 독백. 보통 장소 안내 or 프로그램 설명. <b>Map 문제</b>가 최근 자주 출제됨.<br><br>
+    <b>Map 문제 전략:</b><br>
+    → 지도를 먼저 보고 방향어를 체크해: north/south/east/west, opposite, next to, between, on the left/right, at the end of<br>
+    → 기준점(entrance, main road 등)을 먼저 잡고 상대적 위치로 추적<br><br>
+    <b>Multiple Choice 전략:</b><br>
+    → 보기 3개를 미리 읽고 키워드에 동그라미<br>
+    → 녹음에서 보기 키워드의 패러프레이징 버전이 들림<br>
+    → 첫 번째로 언급된다고 정답 아님 — 반드시 끝까지 듣기<br><br>
+    <b>Matching 전략:</b><br>
+    → A~G 보기를 먼저 읽어 내용 파악<br>
+    → 순서대로 나오지 않을 수 있으니 유연하게 대응
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-section-title">🔄 핵심 패러프레이징 예시 (Part 1·2)</div>
+  <div class="paraphrase-table">
+    <div class="pt-row"><div class="pt-q">문제지 표현</div><div class="pt-a">녹음에서 나오는 표현</div></div>
+    <div class="pt-row"><div class="pt-q">cheap / inexpensive</div><div class="pt-a">affordable, low cost, good value</div></div>
+    <div class="pt-row"><div class="pt-q">parking available</div><div class="pt-a">you can leave your car / there's space for vehicles</div></div>
+    <div class="pt-row"><div class="pt-q">contact us</div><div class="pt-a">get in touch / reach out / give us a call</div></div>
+    <div class="pt-row"><div class="pt-q">registration fee</div><div class="pt-a">cost to sign up / joining charge</div></div>
+    <div class="pt-row"><div class="pt-q">no experience required</div><div class="pt-a">complete beginners welcome / you don't need any background</div></div>
+    <div class="pt-row"><div class="pt-q">must bring ID</div><div class="pt-a">identification is essential / don't forget your documents</div></div>
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-section-title">⚠️ 자주 틀리는 함정 패턴</div>
+  <div class="lesson-text">
+    ① <b>Distractor (오답 유도)</b> — "I was thinking about the blue one... actually no, I'll go with the red." → 처음 말한 거 틀림. 마지막에 확정한 게 정답.<br><br>
+    ② <b>부정어 주의</b> — "The fee does NOT include lunch." → 문제에 "What is included?"면 lunch는 오답.<br><br>
+    ③ <b>단수/복수</b> — 빈칸에 단수인데 복수로 쓰면 오답 처리될 수 있음.<br><br>
+    ④ <b>글자 수 제한</b> — "Write NO MORE THAN TWO WORDS" → 3단어 쓰면 무조건 오답. 관사(a/the)도 단어 수에 포함.
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-section-title">📝 오답노트 작성법</div>
+  <div class="lesson-text">
+    틀린 문제마다 아래 3가지를 기록해:<br><br>
+    <b>① 내가 쓴 답</b> vs <b>정답</b><br>
+    <b>② 녹음에서 실제 쓰인 표현</b> (패러프레이징 확인)<br>
+    <b>③ 왜 틀렸는지</b> (못 들음 / 패러프레이징 몰랐음 / 집중 끊김 / 함정에 걸림)<br><br>
+    이걸 10세트 모으면 내 취약 패턴이 보여. 그게 곧 집중 공략 포인트야.
+  </div>
+</div>
+    `,
+    tasks: [
+      "리스닝 기출 1세트 풀기 (Cambridge 최신판 권장)",
+      "오답 전부 위 오답노트 형식으로 기록하기",
+      "패러프레이징 오답노트 시작 — 틀린 문제의 문제지 표현 vs 녹음 표현 정리"
+    ]
+  },
+  {
+    id: 2,
+    title: "리스닝 모듈2",
+    skill: "listening",
+    tag: "Listening",
+    subtitle: "패러프레이징 전략 + 오답노트",
+    duration: "1:34:03",
+    content: `
+<div class="lesson-block">
+  <div class="lesson-section-title">📌 최근 경향 — Part 2 심화 & 패러프레이징</div>
+  <div class="lesson-text">
+    최근 IELTS 리스닝에서 <b>Band 6.5 이상을 가르는 구간이 바로 Part 2~3</b>야. Part 1은 대부분 맞히는데 Part 2부터 흔들리는 수험생이 많아. 이유는 하나 — 패러프레이징을 못 잡기 때문.<br><br>
+    패러프레이징은 단순히 단어 교체가 아니야. <b>문장 구조 자체가 바뀌는 경우</b>도 있어:<br>
+    문제지: "The center opens on weekends."<br>
+    녹음: "You can visit us Saturday and Sunday."<br>
+    → "opens"→"visit", "weekends"→"Saturday and Sunday"로 완전히 바뀜.
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-section-title">🔄 패러프레이징 3단계 훈련법</div>
+  <div class="lesson-text">
+    <b>Step 1 — 의미 그룹으로 묶기</b><br>
+    단어 하나하나 받아적으려 하지 말고, 의미 덩어리로 들어. "a place where children can play safely" → "safe playground" 이런 식으로 압축해서 이해.<br><br>
+    <b>Step 2 — 동의어 사전 만들기</b><br>
+    자주 나오는 개념어의 동의어를 미리 암기:<br>
+    • 장소: facility / venue / premises / site / location<br>
+    • 비용: fee / charge / cost / rate / price / fare<br>
+    • 예약: reservation / booking / appointment / slot<br>
+    • 변경: change / modify / alter / update / adjust<br>
+    • 제한: limit / restrict / cap / maximum<br><br>
+    <b>Step 3 — Transcript 대조 훈련</b><br>
+    문제 풀고 → 정답 확인 → transcript(녹음 대본) 열어서 <b>문제지 표현과 녹음 표현을 형광펜으로 매칭</b>. 이게 쌓이면 패러프레이징 감이 생겨.
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-section-title">🎯 Part 2 유형별 완전 전략</div>
+  <div class="lesson-text">
+    <b>① Note/Summary completion</b><br>
+    → 빈칸 위아래 문맥으로 품사 예측 (동사 자리인지, 명사 자리인지)<br>
+    → 글자 수 제한 꼭 확인 (보통 NO MORE THAN TWO WORDS AND/OR A NUMBER)<br>
+    → 숫자+단위 조합 주의: "15 minutes" = 2 words<br><br>
+    <b>② Multiple choice (5지선다 → 2개 고르기)</b><br>
+    → 최근 자주 출제되는 신유형. 2개를 고르는 문제.<br>
+    → 보기 A~E 다 읽고 키워드 동그라미<br>
+    → 녹음에서 모든 보기가 언급될 수 있음 — 긍정/부정 주의<br>
+    → "but", "however", "actually" 같은 역접어 뒤가 정답인 경우 많음<br><br>
+    <b>③ Flow chart / Diagram completion</b><br>
+    → 순서가 있는 프로세스 설명<br>
+    → 화살표 방향대로 녹음이 진행됨<br>
+    → 각 단계의 동사(verb)가 핵심 — "fill in → submit → receive → collect" 같은 흐름 파악
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-section-title">📋 오답노트표 작성 완성 가이드</div>
+  <div class="lesson-text">
+    오답노트를 그냥 "틀린 거 모음"으로 쓰면 의미 없어. 아래 형식으로 써야 실력이 돼:<br><br>
+    <b>컬럼 1 — 문제 번호 & 유형</b> (예: Q12, Note completion)<br>
+    <b>컬럼 2 — 내 오답</b><br>
+    <b>컬럼 3 — 정답</b><br>
+    <b>컬럼 4 — 녹음 원문</b> (transcript에서 해당 부분 복사)<br>
+    <b>컬럼 5 — 패러프레이징 포인트</b> (문제지 표현 → 녹음 표현 매핑)<br>
+    <b>컬럼 6 — 오류 원인</b>: 아래 중 하나 선택<br>
+    &nbsp;&nbsp;• [못 들음] 발음/속도 문제<br>
+    &nbsp;&nbsp;• [패러프] 동의어 몰랐음<br>
+    &nbsp;&nbsp;• [함정] distractor에 걸림<br>
+    &nbsp;&nbsp;• [집중] 앞 문제 신경 쓰다 놓침<br>
+    &nbsp;&nbsp;• [글자수] 단어 수 초과<br><br>
+    10세트 풀면 컬럼 6이 어디에 몰려있는지 확인해. 그게 네 진짜 약점이야.
+  </div>
+</div>
+
+<div class="lesson-block">
+  <div class="lesson-section-title">🔥 Band 6.5 달성 체크리스트</div>
+  <div class="lesson-text">
+    Part 1: <b>10개 중 8~9개</b> 목표<br>
+    Part 2: <b>10개 중 7~8개</b> 목표<br>
+    → 합산 40개 중 30개 이상 = Band 7.0<br>
+    → 합산 40개 중 23개 이상 = Band 6.0<br>
+    → <b>6.5 목표면 Part 1 거의 다 맞히고 Part 2에서 최소 6개</b> 확보 전략이 현실적.<br><br>
+    <b>지금 당장 할 것:</b><br>
+    ① Cambridge IELTS 19~15 순서로 풀기 (최신부터)<br>
+    ② 매 세트 풀고 오답노트 작성<br>
+    ③ Transcript로 패러프레이징 매핑 → 단어장에 추가
+  </div>
+</div>
+    `,
+    tasks: [
+      "Part2 3세트 풀어오기 (Cambridge 15~19 중 선택)",
+      "각 세트 오답노트표 완성 (6컬럼 형식으로)",
+      "패러프레이징 표현 20개 이상 단어장에 추가"
+    ]
+  },
+  {
+    id: 3,
+    title: "스피킹 모듈1",
+    skill: "speaking",
+    tag: "Speaking",
+    subtitle: "최신 족보 기출 + Part1 전략",
+    duration: "1:36:36",
+    content: "최신 스피킹 족보 기출문제 기반 Part1 필수 답변 전략. Bubbly 훈련 + 답변 확장 연결어.",
+    tasks: [
+      "Part1 녹음 과제 5세트 제출"
+    ]
+  },
+  {
+    id: 4,
+    title: "리딩 모듈1",
+    skill: "reading",
+    tag: "Reading",
+    subtitle: "TFNG / Sentence completion",
+    duration: "1:27:19",
+    content: "T/F/NG 유형 완전 정복 + Sentence completion 고득점 전략. 패러프레이징 스킬 리딩 적용.",
+    tasks: [
+      "리딩 기출문제 1세트 풀기"
+    ]
+  },
+  {
+    id: 5,
+    title: "리딩 모듈2",
+    skill: "reading",
+    tag: "Reading",
+    subtitle: "Passage2 / 정보매칭",
+    duration: "1:37:34",
+    content: "Passage2 정보매칭 유형 전략 + 스캐닝 훈련. 리딩 MI 워크북 활용법.",
+    tasks: [
+      "리딩 MI 워크북 1세트",
+      "기출 1세트"
+    ]
+  },
+  {
+    id: 6,
+    title: "리딩 모듈3",
+    skill: "reading",
+    tag: "Reading",
+    subtitle: "Passage3 고난도 스캐닝",
+    duration: "1:34:00",
+    content: "Passage3 고난도 지문 완전 공략. 시간 배분 전략 + 스캐닝 훈련.",
+    tasks: [
+      "기출 1세트 풀기",
+      "오답 분석"
+    ]
+  },
+  {
+    id: 7,
+    title: "리딩 모듈4",
+    skill: "reading",
+    tag: "Reading",
+    subtitle: "Matching headings / 시간 배분",
+    duration: "1:28:20",
+    content: "Matching headings 유형 고득점 전략 + 전체 리딩 시간 배분 실전 훈련.",
+    tasks: [
+      "기출 1세트 시간 재고 풀기"
+    ]
+  },
+  {
+    id: 8,
+    title: "라이팅 모듈1 (Task1)",
+    skill: "writing",
+    tag: "Writing",
+    subtitle: "그래프·다이어그램 고득점 표현",
+    duration: "1:36:47",
+    content: "Task1 라인그래프 상승/하락/변동 표현 + 다이어그램 작성법. 자주 틀리는 문법 점검.",
+    tasks: [
+      "Task1 SET1 풀기",
+      "다이어그램 1세트"
+    ]
+  },
+  {
+    id: 9,
+    title: "라이팅 모듈2 / Task2 / 문법",
+    skill: "writing",
+    tag: "Writing",
+    subtitle: "서론 공식 + 문법 총정리",
+    duration: "1:27:58",
+    content: "Task2 서론 공식(Opinion/Discussion 유형) + 아이디어 발상법 + 문법 작문 워크북.",
+    tasks: [
+      "Task2 서론 3세트 작성 제출"
+    ]
+  },
+  {
+    id: 10,
+    title: "라이팅 Task2 본론1,2 작성법",
+    skill: "writing",
+    tag: "Writing",
+    subtitle: "주장-이유-예시 + 연결어",
+    duration: "1:28:10",
+    content: "Task2 본론 구성(주장-이유-예시) + 연결어 암기. 패프단 어휘 실제 작문 적용.",
+    tasks: [
+      "Task2 서론+본론 2세트 작성"
+    ]
+  },
+  {
+    id: 11,
+    title: "라이팅 TASK2 완성 + Self correction",
+    skill: "writing",
+    tag: "Writing",
+    subtitle: "결론 작성 + 자기 교정 훈련",
+    duration: "1:35:45",
+    content: "Task2 결론 완성 + Self correction 체크리스트 훈련. Full 에세이 완성 피드백.",
+    tasks: [
+      "Full 에세이 2세트 제출",
+      "Re-writing 3세트 제출"
+    ]
+  }
+];
+
+const SKILLS = [
+  { name: "Listening", target: 7.0, color: "#5fc49a" },
+  { name: "Reading", target: 7.0, color: "#7aaae0" },
+  { name: "Writing", target: 6.5, color: "#e07ab0" },
+  { name: "Speaking", target: 6.0, color: "#f0a060" }
+];
+
+// ==================== STATE ====================
+function loadState() {
+  return JSON.parse(localStorage.getItem('lora_lms_v2') || '{}');
+}
+
+function saveState(state) {
+  localStorage.setItem('lora_lms_v2', JSON.stringify(state));
+}
+
+let state = loadState();
+if (!state.modules) state.modules = {};
+if (!state.tasks) state.tasks = {};
+if (!state.reports) state.reports = [];
+if (!state.startDate) { state.startDate = new Date().toISOString(); saveState(state); }
+
+// ==================== RENDER ====================
+function renderModules() {
+  const list = document.getElementById('moduleList');
+  list.innerHTML = '';
+
+  MODULES.forEach(mod => {
+    const modDone = state.modules[mod.id];
+    const card = document.createElement('div');
+    card.className = 'module-card' + (modDone ? ' done' : '');
+    card.id = 'mod-' + mod.id;
+
+    const taskItems = mod.tasks.map((t, i) => {
+      const key = `${mod.id}_${i}`;
+      const done = state.tasks[key];
+      return `
+        <div class="task-item ${done ? 'checked' : ''}" onclick="toggleTask(${mod.id}, ${i}, this)">
+          <div class="task-check">${done ? '✓' : ''}</div>
+          <div class="task-text">${t}</div>
+        </div>`;
+    }).join('');
+
+    card.innerHTML = `
+      <div class="module-header" onclick="toggleExpand(${mod.id})">
+        <div class="module-num">${String(mod.id).padStart(2,'0')}</div>
+        <div class="module-info">
+          <div class="module-title">${mod.title}</div>
+          <div class="module-meta">
+            <span class="tag tag-${mod.skill}">${mod.tag}</span>
+            <span class="module-duration">${mod.duration}</span>
+          </div>
+        </div>
+        <div class="module-chevron">▾</div>
+      </div>
+      <div class="module-body">
+        <div class="body-label">강의 내용</div>
+        <div class="body-text" style="padding:0">${mod.content}</div>
+        <div class="body-label">과제</div>
+        <div class="task-list">${taskItems}</div>
+        <div class="action-row">
+          <button class="btn btn-secondary" onclick="event.stopPropagation(); openFeedback(${mod.id})">✏️ 과제 제출 & 피드백</button>
+          <button class="btn ${modDone ? 'btn-secondary' : 'btn-primary'}" onclick="event.stopPropagation(); toggleModuleDone(${mod.id})">${modDone ? '↩ 되돌리기' : '✓ 완료'}</button>
+        </div>
+      </div>`;
+
+    list.appendChild(card);
+  });
+
+  updateProgress();
+}
+
+function toggleExpand(id) {
+  const card = document.getElementById('mod-' + id);
+  card.classList.toggle('expanded');
+}
+
+function toggleTask(modId, taskIdx, el) {
+  const key = `${modId}_${taskIdx}`;
+  state.tasks[key] = !state.tasks[key];
+  saveState(state);
+  el.classList.toggle('checked');
+  const check = el.querySelector('.task-check');
+  check.textContent = state.tasks[key] ? '✓' : '';
+  updateProgress();
+  updateStats();
+}
+
+function toggleModuleDone(id) {
+  state.modules[id] = !state.modules[id];
+  saveState(state);
+  renderModules();
+  updateStats();
+}
+
+function updateProgress() {
+  const done = Object.values(state.modules).filter(Boolean).length;
+  const pct = Math.round((done / 11) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressCount').textContent = `${done}/11`;
+  document.getElementById('statModules').textContent = done;
+}
+
+function updateStats() {
+  const taskDone = Object.values(state.tasks).filter(Boolean).length;
+  document.getElementById('statTasks').textContent = taskDone;
+
+  const start = new Date(state.startDate);
+  const days = Math.floor((Date.now() - start) / 86400000) + 1;
+  document.getElementById('statDays').textContent = days;
+}
+
+function renderSkillBars() {
+  const container = document.getElementById('skillBars');
+  container.innerHTML = SKILLS.map(s => `
+    <div class="skill-row">
+      <div class="skill-top">
+        <span class="skill-name">${s.name}</span>
+        <span class="skill-score">목표 ${s.target}</span>
+      </div>
+      <div class="skill-bar">
+        <div class="skill-fill" style="width:${(s.target/9)*100}%;background:${s.color}"></div>
+      </div>
+    </div>`).join('');
+}
+
+function renderReports() {
+  const container = document.getElementById('reportList');
+  if (!state.reports.length) {
+    container.innerHTML = `<div class="empty-state"><div class="empty-icon">📝</div><div class="empty-text">아직 리포트가 없어요.<br>첫 번째 주간 리포트를 작성해보세요!</div></div>`;
+    return;
+  }
+  container.innerHTML = state.reports.slice().reverse().map((r, i) => `
+    <div class="report-card">
+      <div class="report-week">Week ${state.reports.length - i}</div>
+      <div class="report-title">${new Date(r.date).toLocaleDateString('ko-KR', {month:'long', day:'numeric'})} 리포트</div>
+      <div class="report-row"><span class="report-key">완료 모듈</span><span class="report-val">${r.modules || '-'}</span></div>
+      <div class="report-row"><span class="report-key">잘한 점</span><span class="report-val">${r.good || '-'}</span></div>
+      <div class="report-row"><span class="report-key">개선 포인트</span><span class="report-val">${r.weak || '-'}</span></div>
+    </div>`).join('');
+}
+
+// ==================== FEEDBACK MODAL ====================
+let currentModId = null;
+
+function openFeedback(modId) {
+  currentModId = modId;
+  const mod = MODULES.find(m => m.id === modId);
+  document.getElementById('modalTitle').textContent = `모듈 ${modId} — ${mod.tag} 피드백`;
+  document.getElementById('modalSub').textContent = `${mod.title} 과제를 붙여넣으세요`;
+  document.getElementById('modalInput').value = '';
+  document.getElementById('feedbackBox').className = 'feedback-box';
+  document.getElementById('feedbackBox').innerHTML = '';
+  document.getElementById('submitBtn').disabled = false;
+  document.getElementById('submitBtn').textContent = 'AI 피드백 받기';
+  document.getElementById('feedbackModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('feedbackModal').classList.remove('open');
+}
+
+async function submitFeedback() {
+  const input = document.getElementById('modalInput').value.trim();
+  if (!input) { alert('내용을 입력해주세요!'); return; }
+
+  const mod = MODULES.find(m => m.id === currentModId);
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '분석중...';
+
+  const box = document.getElementById('feedbackBox');
+  box.className = 'feedback-box visible';
+  box.innerHTML = '<div class="feedback-loading">⏳ IELTS 기준으로 분석중...</div>';
+
+  const systemPrompt = `You are an expert IELTS tutor. The student is Korean, targeting Band 6.5. 
+Current module: ${mod.title} (${mod.tag}).
+Give feedback in Korean. Be specific, actionable, and encouraging. 
+Format your response with these sections:
+[강점] - what they did well
+[개선점] - specific things to improve  
+[수정 예시] - a corrected/improved version of part of their work
+[다음 단계] - one specific action to take next
+Keep it concise and practical.`;
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: "user", content: `다음은 ${mod.tag} 모듈 과제입니다:\n\n${input}` }]
+      })
+    });
+    const data = await res.json();
+    const text = data.content.map(c => c.text || '').join('');
+    
+    // Parse sections
+    const formatted = text
+      .replace(/\[강점\]/g, '<div class="feedback-section-title">💪 강점</div>')
+      .replace(/\[개선점\]/g, '<div class="feedback-section-title">🎯 개선점</div>')
+      .replace(/\[수정 예시\]/g, '<div class="feedback-section-title">✏️ 수정 예시</div>')
+      .replace(/\[다음 단계\]/g, '<div class="feedback-section-title">➡️ 다음 단계</div>')
+      .replace(/\n/g, '<br>');
+    
+    box.innerHTML = formatted;
+    btn.textContent = '다시 받기';
+    btn.disabled = false;
+  } catch(e) {
+    box.innerHTML = '<div style="color:#e04a2f">오류가 발생했어요. 다시 시도해주세요.</div>';
+    btn.disabled = false;
+    btn.textContent = 'AI 피드백 받기';
+  }
+}
+
+// ==================== REPORT MODAL ====================
+function openReportModal() {
+  document.getElementById('reportModules').value = '';
+  document.getElementById('reportGood').value = '';
+  document.getElementById('reportWeak').value = '';
+  document.getElementById('reportModal').classList.add('open');
+}
+
+function closeReportModal() {
+  document.getElementById('reportModal').classList.remove('open');
+}
+
+function saveReport() {
+  const report = {
+    date: new Date().toISOString(),
+    modules: document.getElementById('reportModules').value.trim(),
+    good: document.getElementById('reportGood').value.trim(),
+    weak: document.getElementById('reportWeak').value.trim()
+  };
+  state.reports.push(report);
+  saveState(state);
+  closeReportModal();
+  renderReports();
+}
+
+// ==================== TABS ====================
+function switchTab(name, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  if (name === 'report') renderReports();
+}
+
+function switchNav(name) {
+  const tabMap = { modules: 0, stats: 1, report: 2 };
+  const tabs = document.querySelectorAll('.tab');
+  const tab = tabs[tabMap[name]];
+  if (tab) switchTab(name, tab);
+}
+
+// ==================== DATE ====================
+function updateDate() {
+  const d = new Date();
+  const options = { month: 'long', day: 'numeric', weekday: 'short' };
+  document.getElementById('dateLabel').textContent = d.toLocaleDateString('ko-KR', options);
+}
+
+// ==================== INIT ====================
+updateDate();
+renderModules();
+renderSkillBars();
+updateStats();
+</script>
+</body>
+</html>

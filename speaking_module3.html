@@ -1,0 +1,1714 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Speaking Module 3 — IELTS 6.5</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+:root {
+  --bg: #0e0e0e;
+  --surface: #1a1a1a;
+  --surface2: #242424;
+  --surface3: #2c2c2c;
+  --border: #2e2e2e;
+  --accent: #e04a2f;
+  --accent2: #f0a500;
+  --text: #f0ede8;
+  --muted: #7a7570;
+  --speaking: #e07a2f;
+  --green: #4caf7d;
+  --blue: #5a9fd4;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding-bottom: 40px;
+}
+
+/* HEADER */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: 18px 20px 14px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.logo {
+  font-family: 'DM Serif Display', serif;
+  font-size: 16px;
+}
+
+.logo span { color: var(--speaking); }
+
+.band-badge {
+  background: var(--speaking);
+  color: white;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.05em;
+}
+
+/* TABS */
+.tabs {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.tabs::-webkit-scrollbar { display: none; }
+
+.tab {
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+  transition: all 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.tab.active {
+  color: var(--speaking);
+  border-bottom-color: var(--speaking);
+}
+
+/* MAIN */
+.main { padding: 18px; }
+
+.page { display: none; }
+.page.active { display: block; }
+
+/* BLOCKS */
+.block {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  margin-bottom: 14px;
+  overflow: hidden;
+}
+
+.block-header {
+  padding: 14px 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.block-title {
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.block-subtitle {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 3px;
+}
+
+.block-chevron {
+  color: var(--muted);
+  font-size: 14px;
+  transition: transform 0.2s;
+  flex-shrink: 0;
+}
+
+.block.expanded .block-chevron { transform: rotate(180deg); }
+
+.block-body {
+  display: none;
+  border-top: 1px solid var(--border);
+  padding: 16px;
+}
+
+.block.expanded .block-body { display: block; }
+
+/* TYPOGRAPHY */
+.sec-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 20px;
+  margin-bottom: 4px;
+}
+
+.sec-sub {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 18px;
+}
+
+.label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+  margin-top: 14px;
+}
+
+.label:first-child { margin-top: 0; }
+
+.body-text {
+  font-size: 13px;
+  line-height: 1.8;
+  color: #ccc;
+}
+
+.body-text b { color: var(--text); }
+.body-text i { color: var(--accent2); font-style: normal; }
+
+/* HIGHLIGHT BOX */
+.hbox {
+  background: var(--surface2);
+  border-left: 3px solid var(--speaking);
+  border-radius: 0 8px 8px 0;
+  padding: 12px 14px;
+  margin: 10px 0;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #ccc;
+}
+
+.hbox.green { border-left-color: var(--green); }
+.hbox.blue { border-left-color: var(--blue); }
+.hbox.gold { border-left-color: var(--accent2); }
+
+/* MODEL ANSWER */
+.model-answer {
+  background: #1a2a1a;
+  border: 1px solid #2a4a2a;
+  border-radius: 10px;
+  padding: 14px;
+  margin: 10px 0;
+  font-size: 13px;
+  line-height: 1.85;
+  color: #b8d4b8;
+}
+
+.model-answer .highlight {
+  background: rgba(240,165,0,0.2);
+  color: var(--accent2);
+  border-radius: 3px;
+  padding: 0 2px;
+  font-weight: 600;
+}
+
+.model-answer .idiom {
+  background: rgba(224,122,47,0.2);
+  color: #f0a060;
+  border-radius: 3px;
+  padding: 0 2px;
+  font-weight: 600;
+  text-decoration: underline dotted;
+}
+
+.answer-label {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+/* IDIOM TABLE */
+.idiom-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.idiom-card {
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+
+.idiom-phrase {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--accent2);
+  margin-bottom: 3px;
+}
+
+.idiom-meaning {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.idiom-example {
+  font-size: 12px;
+  color: #aaa;
+  line-height: 1.6;
+  font-style: italic;
+  border-left: 2px solid var(--speaking);
+  padding-left: 8px;
+}
+
+/* FORMULA BOX */
+.formula {
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  margin: 10px 0;
+}
+
+.formula-title {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--speaking);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+
+.formula-step {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+  align-items: flex-start;
+}
+
+.formula-num {
+  min-width: 22px;
+  height: 22px;
+  background: var(--speaking);
+  color: white;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.formula-text {
+  font-size: 13px;
+  color: #ccc;
+  line-height: 1.6;
+}
+
+.formula-text b { color: var(--text); }
+
+/* TOPIC CARD */
+.topic-card {
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 10px;
+}
+
+.topic-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.topic-icon { font-size: 16px; }
+
+.topic-points {
+  font-size: 12px;
+  color: #aaa;
+  line-height: 1.7;
+}
+
+.topic-points span {
+  display: block;
+  padding: 3px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.topic-points span:last-child { border-bottom: none; }
+
+/* SCORE TABLE */
+.score-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.score-table th {
+  background: var(--surface3);
+  color: var(--muted);
+  font-weight: 600;
+  text-align: left;
+  padding: 8px 10px;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+}
+
+.score-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  color: #ccc;
+  vertical-align: top;
+}
+
+.score-table tr:last-child td { border-bottom: none; }
+
+.score-table .band {
+  font-weight: 700;
+  color: var(--accent2);
+  font-size: 14px;
+}
+
+/* VOCAB CHIPS */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.chip {
+  background: var(--surface3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: #ccc;
+}
+
+.chip.gold { border-color: var(--accent2); color: var(--accent2); background: rgba(240,165,0,0.08); }
+.chip.orange { border-color: var(--speaking); color: #f0a060; background: rgba(224,122,47,0.08); }
+
+/* PRACTICE BUTTON */
+.practice-btn {
+  width: 100%;
+  padding: 12px;
+  background: var(--speaking);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 14px;
+}
+
+.practice-btn:active { opacity: 0.85; }
+
+/* TIMER */
+.timer-box {
+  background: var(--surface2);
+  border-radius: 10px;
+  padding: 16px;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.timer-display {
+  font-family: 'DM Serif Display', serif;
+  font-size: 48px;
+  color: var(--accent2);
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.timer-btns {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.timer-btn {
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+}
+
+.timer-btn.start { background: var(--green); color: white; }
+.timer-btn.stop { background: var(--accent); color: white; }
+.timer-btn.reset { background: var(--surface3); color: var(--text); border: 1px solid var(--border); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-top">
+    <div class="logo">Speaking <span>Module 3</span></div>
+    <div class="band-badge">TARGET 6.5</div>
+  </div>
+</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('overview', this)">개요</div>
+  <div class="tab" onclick="switchTab('part1', this)">Part 1</div>
+  <div class="tab" onclick="switchTab('part2', this)">Part 2</div>
+  <div class="tab" onclick="switchTab('part3', this)">Part 3</div>
+  <div class="tab" onclick="switchTab('idioms', this)">이디엄</div>
+  <div class="tab" onclick="switchTab('topics', this)">토픽 상식</div>
+  <div class="tab" onclick="switchTab('practice', this)">연습</div>
+  <div class="tab" onclick="switchTab('recorder', this)">🎙️ 녹음</div>
+</div>
+
+<!-- ==================== OVERVIEW ==================== -->
+<div class="page active" id="page-overview">
+<div class="main">
+  <div class="sec-title">Speaking 완전 정복</div>
+  <div class="sec-sub">Band 6.5 목표 전략 가이드</div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">📊 채점 기준 4가지</div><div class="block-subtitle">무엇을 보는지 알아야 준비가 된다</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <table class="score-table">
+        <tr><th>기준</th><th>비중</th><th>Band 6.5 요건</th></tr>
+        <tr><td><b style="color:#f0ede8">Fluency & Coherence</b></td><td class="band">25%</td><td>자연스러운 속도, 긴 pause 없음, 논리적 연결</td></tr>
+        <tr><td><b style="color:#f0ede8">Lexical Resource</b></td><td class="band">25%</td><td>다양한 어휘, 이디엄 1~2개, 콜로케이션</td></tr>
+        <tr><td><b style="color:#f0ede8">Grammatical Range</b></td><td class="band">25%</td><td>복문 사용, 시제 다양, 소소한 오류 OK</td></tr>
+        <tr><td><b style="color:#f0ede8">Pronunciation</b></td><td class="band">25%</td><td>전반적으로 이해 가능, 억양 자연스러움</td></tr>
+      </table>
+      <div class="hbox gold" style="margin-top:12px">
+        💡 <b>핵심:</b> 완벽한 문법보다 <b>자연스러운 흐름</b>이 중요해. 잠깐 틀려도 멈추지 말고 계속 말하는 게 점수가 높아.
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">🗓️ 시험 구조 한눈에</div><div class="block-subtitle">파트별 시간과 특징</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="hbox blue">
+        <b>Part 1 — 4~5분</b><br>
+        Examiner가 familiar topics (본인, 집, 취미, 루틴)에 대해 질문. 짧고 자연스럽게 대답. 너무 길게 말하면 오히려 감점.
+      </div>
+      <div class="hbox" style="margin-top:8px">
+        <b>Part 2 — 3~4분</b><br>
+        Cue card 받고 1분 준비 후 1~2분 혼자 말하기. 구조가 명확해야 함. 준비 시간 활용이 핵심.
+      </div>
+      <div class="hbox green" style="margin-top:8px">
+        <b>Part 3 — 4~5분</b><br>
+        Part 2 주제와 연결된 추상적 질문. 의견 + 이유 + 예시 구조로 깊이 있게 답변.
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">🇳🇿 뉴질랜드 영어 특징</div><div class="block-subtitle">시험관이 쓰는 표현들</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="body-text">
+        IELTS 시험관이 뉴질랜드 억양이라도 당황하지 마. 주요 특징:<br><br>
+        <b>발음 차이:</b><br>
+        • "fish and chips" → "fush and chups" 처럼 /ɪ/ → /ʊ/ 발음<br>
+        • "ten" → "tin" 처럼 들릴 수 있음<br>
+        • 문장 끝을 올리는 억양 (rising intonation) 자주 씀<br><br>
+        <b>뉴질랜드식 표현들:</b>
+      </div>
+      <div class="idiom-grid" style="margin-top:10px">
+        <div class="idiom-card">
+          <div class="idiom-phrase">Sweet as / Choice</div>
+          <div class="idiom-meaning">= Great, awesome (뉴질랜드 슬랭)</div>
+          <div class="idiom-example">"Sweet as, bro!" — 시험에서 쓰면 안 되지만 시험관이 쓸 수 있음</div>
+        </div>
+        <div class="idiom-card">
+          <div class="idiom-phrase">Keen</div>
+          <div class="idiom-meaning">= Interested, eager (영국식 영어에서 자주 쓰임)</div>
+          <div class="idiom-example">"Are you keen on outdoor activities?" — 이런 질문 나올 수 있음</div>
+        </div>
+        <div class="idiom-card">
+          <div class="idiom-phrase">Heaps</div>
+          <div class="idiom-meaning">= A lot, many (뉴질랜드·호주식)</div>
+          <div class="idiom-example">"There are heaps of things to do in my city." — 답변에 써도 자연스러움</div>
+        </div>
+        <div class="idiom-card">
+          <div class="idiom-phrase">Cheers</div>
+          <div class="idiom-meaning">= Thank you (영국·뉴질랜드식)</div>
+          <div class="idiom-example">시험 끝날 때 "Cheers for your time" 가볍게 써도 OK</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ==================== PART 1 ==================== -->
+<div class="page" id="page-part1">
+<div class="main">
+  <div class="sec-title">Part 1 전략</div>
+  <div class="sec-sub">Familiar topics — 자연스럽고 짧게</div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">✅ Part 1 황금 원칙</div><div class="block-subtitle">어떻게 대답해야 하는가</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="formula">
+        <div class="formula-title">AER 공식 (Answer → Extend → Reason)</div>
+        <div class="formula-step">
+          <div class="formula-num">A</div>
+          <div class="formula-text"><b>Answer</b> — 질문에 직접 답 (1문장)</div>
+        </div>
+        <div class="formula-step">
+          <div class="formula-num">E</div>
+          <div class="formula-text"><b>Extend</b> — 조금 더 살 붙이기 (1~2문장)</div>
+        </div>
+        <div class="formula-step">
+          <div class="formula-num">R</div>
+          <div class="formula-text"><b>Reason/Example</b> — 이유나 예시 한 가지 (1문장)</div>
+        </div>
+      </div>
+      <div class="hbox gold">
+        ⏱️ Part 1 답변 적정 길이: <b>20~30초</b>. 너무 짧으면 fluency 부족, 너무 길면 part 2처럼 들려서 오히려 어색해.
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">🏠 토픽 1 — Hometown / Where you live</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="label">예상 질문</div>
+      <div class="body-text">
+        • Where are you from?<br>
+        • Do you like living there? Why/Why not?<br>
+        • What's your hometown famous for?<br>
+        • Has your hometown changed much recently?
+      </div>
+      <div class="label" style="margin-top:14px">모범 답안 (Band 6.5)</div>
+      <div class="answer-label">Q: Do you like living in your hometown?</div>
+      <div class="model-answer">
+        I'd say I have <span class="idiom">mixed feelings</span> about it, to be honest. On one hand, I really appreciate the <span class="highlight">convenience</span> — everything I need is within easy reach. But on the other hand, it can feel a bit <span class="highlight">overwhelming</span> at times because it's such a <span class="highlight">fast-paced</span> city. I think I'd enjoy living somewhere <span class="highlight">quieter</span> eventually.
+      </div>
+      <div class="hbox" style="margin-top:8px">
+        🟠 = 이디엄 &nbsp;&nbsp; 🟡 = 고급 어휘<br>
+        <b>포인트:</b> "mixed feelings" 이디엄 자연스럽게, "fast-paced" 콜로케이션 사용, 긍정+부정 양면 제시로 깊이감
+      </div>
+      <div class="label">쓸 수 있는 어휘</div>
+      <div class="chip-group">
+        <div class="chip gold">fast-paced</div>
+        <div class="chip gold">vibrant</div>
+        <div class="chip gold">well-connected</div>
+        <div class="chip gold">tight-knit community</div>
+        <div class="chip orange">mixed feelings</div>
+        <div class="chip orange">wouldn't trade it for anything</div>
+        <div class="chip">hectic</div>
+        <div class="chip">laid-back</div>
+        <div class="chip">cosmopolitan</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">📚 토픽 2 — Study / Work</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="label">예상 질문</div>
+      <div class="body-text">
+        • Are you a student or do you work?<br>
+        • Do you enjoy your studies/work?<br>
+        • What do you find most challenging about it?<br>
+        • Would you like to change your career in the future?
+      </div>
+      <div class="label">모범 답안</div>
+      <div class="answer-label">Q: What do you find most challenging about your studies?</div>
+      <div class="model-answer">
+        Honestly, the most challenging part is <span class="highlight">managing my time effectively</span>. I often have <span class="idiom">a lot on my plate</span>, and it can be tricky to <span class="highlight">juggle</span> multiple tasks at once. For instance, last semester I had to balance assignments with preparing for exams at the same time, which was quite <span class="highlight">demanding</span>. But I think it's actually helped me become more <span class="highlight">organised</span> over time.
+      </div>
+      <div class="label">쓸 수 있는 어휘</div>
+      <div class="chip-group">
+        <div class="chip gold">time management</div>
+        <div class="chip gold">demanding</div>
+        <div class="chip gold">rewarding</div>
+        <div class="chip orange">a lot on my plate</div>
+        <div class="chip orange">keep on top of things</div>
+        <div class="chip">juggle</div>
+        <div class="chip">on track</div>
+        <div class="chip">fulfilling</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">🎵 토픽 3 — Hobbies / Free time</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="label">예상 질문</div>
+      <div class="body-text">
+        • What do you do in your free time?<br>
+        • Have your hobbies changed since you were a child?<br>
+        • Is it important to have hobbies? Why?<br>
+        • Do you prefer indoor or outdoor activities?
+      </div>
+      <div class="label">모범 답안</div>
+      <div class="answer-label">Q: Have your hobbies changed since you were younger?</div>
+      <div class="model-answer">
+        Quite a lot, actually. When I was little, I was <span class="idiom">into</span> outdoor things like cycling and playing with friends, but these days I tend to <span class="highlight">gravitate towards</span> more <span class="highlight">low-key</span> activities like reading or watching documentaries. I think it's just a <span class="highlight">natural shift</span> that happens as you get older and your lifestyle becomes busier. That said, I still try to <span class="idiom">get some fresh air</span> whenever I can.
+      </div>
+      <div class="label">쓸 수 있는 어휘</div>
+      <div class="chip-group">
+        <div class="chip gold">gravitate towards</div>
+        <div class="chip gold">unwind</div>
+        <div class="chip gold">recharge</div>
+        <div class="chip orange">get some fresh air</div>
+        <div class="chip orange">kill time</div>
+        <div class="chip">low-key</div>
+        <div class="chip">leisure time</div>
+        <div class="chip">be into</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">🌦️ 토픽 4 — Weather / Seasons</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="label">예상 질문</div>
+      <div class="body-text">
+        • What's the weather like in your country?<br>
+        • Do you prefer hot or cold weather?<br>
+        • Does the weather affect your mood?<br>
+        • Has the weather in your area changed recently?
+      </div>
+      <div class="label">모범 답안</div>
+      <div class="answer-label">Q: Does the weather affect your mood?</div>
+      <div class="model-answer">
+        Definitely. I find that <span class="highlight">sunny weather</span> tends to <span class="idiom">lift my spirits</span> and makes me feel more <span class="highlight">motivated</span>, whereas <span class="highlight">overcast or rainy days</span> can make me feel a bit <span class="highlight">sluggish</span>. I know some people <span class="idiom">don't mind</span> grey weather at all, but for me personally it <span class="highlight">has a real impact</span> on my energy levels. I guess I'm just <span class="highlight">sensitive to</span> my environment.
+      </div>
+      <div class="label">쓸 수 있는 어휘</div>
+      <div class="chip-group">
+        <div class="chip gold">sweltering</div>
+        <div class="chip gold">mild / temperate</div>
+        <div class="chip gold">overcast</div>
+        <div class="chip orange">lift my spirits</div>
+        <div class="chip orange">under the weather</div>
+        <div class="chip">sluggish</div>
+        <div class="chip">unpredictable</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">📱 토픽 5 — Technology / Social Media</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="label">예상 질문</div>
+      <div class="body-text">
+        • How often do you use social media?<br>
+        • Do you think technology has improved our lives?<br>
+        • What's your favourite app and why?
+      </div>
+      <div class="label">모범 답안</div>
+      <div class="answer-label">Q: How often do you use social media?</div>
+      <div class="model-answer">
+        I use it <span class="highlight">fairly regularly</span>, probably a few times a day, mostly to <span class="highlight">keep in touch with</span> friends and family. But I've been trying to <span class="idiom">cut back</span> recently because I find it <span class="highlight">eats into</span> my study time more than I'd like. I think it's all about finding the right <span class="highlight">balance</span> — it's a great tool but it can easily become a <span class="highlight">distraction</span>.
+      </div>
+      <div class="label">쓸 수 있는 어휘</div>
+      <div class="chip-group">
+        <div class="chip gold">eats into my time</div>
+        <div class="chip gold">keep in touch</div>
+        <div class="chip orange">cut back on</div>
+        <div class="chip orange">glued to my phone</div>
+        <div class="chip">distraction</div>
+        <div class="chip">scrolling</div>
+        <div class="chip">digital detox</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ==================== PART 2 ==================== -->
+<div class="page" id="page-part2">
+<div class="main">
+  <div class="sec-title">Part 2 전략</div>
+  <div class="sec-sub">Cue Card — 1분 준비, 2분 말하기</div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">⏱️ 1분 준비 시간 활용법</div><div class="block-subtitle">이걸 못 쓰면 절반은 날리는 거야</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="formula">
+        <div class="formula-title">1분 준비 루틴</div>
+        <div class="formula-step">
+          <div class="formula-num">1</div>
+          <div class="formula-text"><b>0~15초:</b> 카드 전체 읽기 — Who/What/Where/When/Why 파악</div>
+        </div>
+        <div class="formula-step">
+          <div class="formula-num">2</div>
+          <div class="formula-text"><b>15~40초:</b> 4개 bullet point마다 키워드 1~2개씩 메모 (영어로)</div>
+        </div>
+        <div class="formula-step">
+          <div class="formula-num">3</div>
+          <div class="formula-text"><b>40~60초:</b> 첫 문장(intro) 머릿속으로 연습 + 마지막 wrap-up 생각</div>
+        </div>
+      </div>
+      <div class="hbox gold">
+        💡 메모는 단어만! "trip / Jeju / family / summer / relaxing" 이 정도면 충분. 문장 쓰다가 시간 낭비하지 마.
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">🗺️ WWWWW 스피킹 구조</div><div class="block-subtitle">2분을 채우는 확실한 공식</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="formula">
+        <div class="formula-title">WWWWW Formula</div>
+        <div class="formula-step"><div class="formula-num">W</div><div class="formula-text"><b>Who</b> — 누구와? 혼자? 가족? 친구?</div></div>
+        <div class="formula-step"><div class="formula-num">W</div><div class="formula-text"><b>What</b> — 무엇을? 구체적 묘사</div></div>
+        <div class="formula-step"><div class="formula-num">W</div><div class="formula-text"><b>Where</b> — 어디서?</div></div>
+        <div class="formula-step"><div class="formula-num">W</div><div class="formula-text"><b>When</b> — 언제? 과거/현재/미래?</div></div>
+        <div class="formula-step"><div class="formula-num">W</div><div class="formula-text"><b>Why</b> — 왜 기억에 남는지? 어떤 감정?</div></div>
+      </div>
+      <div class="hbox">각 W마다 2~3문장씩 = 10~15문장 = 2분 채우기 충분해.</div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">✈️ 카드 예시 1 — A memorable trip</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="hbox blue">
+        <b>Cue Card:</b> Describe a trip you enjoyed.<br>
+        You should say: where you went / who you went with / what you did there / and explain why you enjoyed it.
+      </div>
+      <div class="label">모범 답안 (Band 6.5~7)</div>
+      <div class="model-answer">
+        I'd like to talk about a trip I took to Jeju Island a couple of years ago with my family. It was during the summer holidays, and <span class="idiom">I was really looking forward to it</span> because I'd been <span class="highlight">under a lot of pressure</span> from work and desperately needed a break.<br><br>
+        We spent about five days there, and we <span class="highlight">made the most of</span> every day. We hiked up Hallasan, which was <span class="highlight">breathtaking</span> — the views from the top were absolutely <span class="highlight">stunning</span>. We also visited some of the black lava beaches, which I'd never seen before, and tried loads of local food like black pork and fresh seafood.<br><br>
+        What made it really special was just being able to <span class="idiom">switch off completely</span> from everyday life. There were no deadlines, no responsibilities — just good food, beautiful scenery, and quality time with my family. I remember thinking I <span class="idiom">wouldn't have changed it for the world</span>.<br><br>
+        Looking back, I think it was one of those trips that <span class="highlight">recharges you</span> in a way that nothing else can. I'd love to go back someday.
+      </div>
+      <div class="hbox" style="margin-top:8px">
+        <b>분석:</b> 시간 순서로 자연스럽게 흐름. 감각적 묘사(breathtaking, stunning). 이디엄 3개 자연스럽게 삽입. 마지막에 감정 wrap-up.
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">👤 카드 예시 2 — A person you admire</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="hbox blue">
+        <b>Cue Card:</b> Describe a person you admire.<br>
+        You should say: who this person is / how you know them / what they do / and explain why you admire them.
+      </div>
+      <div class="label">모범 답안</div>
+      <div class="model-answer">
+        The person I'd like to talk about is my high school English teacher, Mrs. Kim. She taught me during my final two years of school, and she was <span class="highlight">without doubt</span> one of the most <span class="highlight">influential</span> people in my life.<br><br>
+        What set her apart was the way she made learning feel <span class="highlight">genuinely exciting</span>. She didn't just <span class="idiom">go through the motions</span> like some teachers do — she really <span class="highlight">invested in</span> her students. I remember she used to stay after class to help anyone who was struggling, never making you feel embarrassed for not understanding something.<br><br>
+        I admire her because she <span class="highlight">led by example</span>. She was always <span class="highlight">well-prepared</span>, passionate about her subject, and <span class="highlight">genuinely cared</span> about our future. Because of her, I developed a real love for the English language, which is actually why I'm here taking this exam today.<br><br>
+        I think great teachers <span class="idiom">leave a lasting impression</span>, and she's definitely someone I'll always be grateful for.
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">🏠 카드 예시 3 — A place you'd like to visit</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="hbox blue">
+        <b>Cue Card:</b> Describe a place you would like to visit.<br>
+        You should say: where it is / why you want to go / what you would do there / and explain why it interests you.
+      </div>
+      <div class="label">모범 답안</div>
+      <div class="model-answer">
+        A place I've always <span class="idiom">had my heart set on</span> visiting is New Zealand, particularly the South Island. I've seen so many photos and documentaries about it, and it just looks <span class="highlight">absolutely spectacular</span>.<br><br>
+        The main reason I want to go is the <span class="highlight">natural scenery</span> — the fjords, the mountains, the crystal-clear lakes. Places like Milford Sound look like something <span class="idiom">straight out of a movie</span>, and I'd love to experience that in person. I'd also want to try <span class="highlight">adventure activities</span> like bungee jumping or skydiving, since New Zealand is <span class="highlight">renowned for</span> that kind of thing.<br><br>
+        Another thing that draws me there is the culture. New Zealand has a really <span class="highlight">unique blend</span> of Māori heritage and modern life, which I find <span class="highlight">fascinating</span>. I'd love to learn about Māori traditions and maybe even attend a cultural ceremony.<br><br>
+        I think it would be <span class="idiom">the trip of a lifetime</span>, and it's definitely on my bucket list.
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">🛠️ 막힐 때 쓰는 Filler 표현</div><div class="block-subtitle">절대 침묵하지 마라</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="body-text">
+        <b>시작할 때:</b><br>
+        • "That's an interesting one... I'd like to talk about..."<br>
+        • "Right, so the thing I want to describe is..."<br>
+        • "I'd have to say it's..."<br><br>
+        <b>생각하면서:</b><br>
+        • "Let me think about that for a second..."<br>
+        • "How can I put this..."<br>
+        • "What comes to mind is..."<br>
+        • "If I'm being honest..."<br><br>
+        <b>연결할 때:</b><br>
+        • "What's more..." / "On top of that..."<br>
+        • "Thinking about it more..."<br>
+        • "What really stands out is..."<br>
+        • "The thing that made it special was..."<br><br>
+        <b>마무리할 때:</b><br>
+        • "So yeah, that's why it means a lot to me."<br>
+        • "All in all, it was a really memorable experience."<br>
+        • "Looking back, I think it was one of the best..."
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ==================== PART 3 ==================== -->
+<div class="page" id="page-part3">
+<div class="main">
+  <div class="sec-title">Part 3 전략</div>
+  <div class="sec-sub">Abstract discussion — 깊이 있게 논하기</div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">🧠 Part 3 답변 구조 PEEL</div><div class="block-subtitle">의견 → 이유 → 예시 → 마무리</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="formula">
+        <div class="formula-title">PEEL Formula</div>
+        <div class="formula-step"><div class="formula-num">P</div><div class="formula-text"><b>Point</b> — 나의 입장 한 문장</div></div>
+        <div class="formula-step"><div class="formula-num">E</div><div class="formula-text"><b>Explain</b> — 왜 그렇게 생각하는지</div></div>
+        <div class="formula-step"><div class="formula-num">E</div><div class="formula-text"><b>Example</b> — 구체적 예시 or 상황</div></div>
+        <div class="formula-step"><div class="formula-num">L</div><div class="formula-text"><b>Link back</b> — 처음 주장으로 연결/확장</div></div>
+      </div>
+      <div class="hbox gold">
+        Part 3에서는 <b>양면을 보여주는 것</b>이 고득점 포인트야. "On one hand... but on the other hand..." 구조가 Coherence 점수 올려줘.
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">🌍 토픽 1 — Travel / Tourism</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="label">자주 나오는 질문</div>
+      <div class="body-text">
+        • Why do people enjoy travelling?<br>
+        • Do you think tourism is always beneficial for a country?<br>
+        • How has the way people travel changed in recent years?<br>
+        • Should governments invest more in tourism?
+      </div>
+      <div class="label">모범 답안</div>
+      <div class="answer-label">Q: Do you think tourism is always beneficial for a country?</div>
+      <div class="model-answer">
+        Not necessarily. While tourism <span class="highlight">undoubtedly</span> brings significant economic benefits — boosting local businesses and creating jobs — it can also have some <span class="highlight">negative consequences</span> that are easy to <span class="idiom">overlook</span>.<br><br>
+        For instance, popular destinations like Bali or Barcelona have been <span class="highlight">overwhelmed</span> by tourists in recent years, which has led to rising living costs for locals and serious <span class="highlight">environmental damage</span>. This phenomenon is often called "<span class="highlight">overtourism</span>."<br><br>
+        That said, I think the key is <span class="highlight">sustainable management</span>. If governments <span class="idiom">strike the right balance</span> between attracting visitors and protecting local communities, then tourism can absolutely be a positive force. So it's not a black-and-white issue — it really <span class="highlight">depends on how</span> it's managed.
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">💻 토픽 2 — Technology & Society</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="label">자주 나오는 질문</div>
+      <div class="body-text">
+        • How has technology changed the way we communicate?<br>
+        • Do you think people rely too much on technology?<br>
+        • What are the negative effects of social media on young people?<br>
+        • Will AI replace human jobs in the future?
+      </div>
+      <div class="label">모범 답안</div>
+      <div class="answer-label">Q: Do you think people rely too much on technology?</div>
+      <div class="model-answer">
+        I think there's a strong case to be made for that. Technology has become so <span class="highlight">deeply embedded</span> in daily life that many people — myself included — would struggle to function without it. We use devices for everything from navigation to communication to entertainment, and that level of <span class="highlight">dependency</span> is worth questioning.<br><br>
+        However, I'd argue it's not necessarily a bad thing if the <span class="highlight">reliance is purposeful</span>. The problem arises when technology <span class="idiom">takes over</span> activities that are better done without it — like face-to-face conversations or spending time in nature. There's a risk of people <span class="idiom">losing touch with</span> basic human skills.<br><br>
+        So I think the real issue isn't technology itself, but <span class="highlight">how consciously we use it</span>. It's a tool, and like any tool, the impact depends on who's using it and how.
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">🎓 토픽 3 — Education</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="label">자주 나오는 질문</div>
+      <div class="body-text">
+        • What makes a good teacher?<br>
+        • Should education be free for everyone?<br>
+        • How important is university education today?<br>
+        • Should children be taught life skills at school?
+      </div>
+      <div class="label">모범 답안</div>
+      <div class="answer-label">Q: How important is university education today?</div>
+      <div class="model-answer">
+        It's still quite important, but I think its role is <span class="highlight">evolving</span>. Traditionally, a degree was seen as <span class="idiom">the golden ticket</span> to a successful career. But nowadays, with the <span class="highlight">rise of online learning</span> and vocational training, there are more <span class="highlight">alternative pathways</span> available.<br><br>
+        That being said, for many professions — medicine, law, engineering — a university degree remains <span class="highlight">essential</span>. And beyond qualifications, university provides valuable experiences like <span class="highlight">critical thinking</span>, independence, and networking.<br><br>
+        I suppose my view is that university is <span class="highlight">valuable but not the only route</span>. What matters most is finding a path that aligns with your strengths and goals. The idea that everyone must go to university is <span class="idiom">a bit outdated</span>, in my opinion.
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">🌿 토픽 4 — Environment</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="label">자주 나오는 질문</div>
+      <div class="body-text">
+        • Who is more responsible for environmental problems — individuals or governments?<br>
+        • What can ordinary people do to help the environment?<br>
+        • Should governments ban plastic packaging?<br>
+        • Why do some people ignore environmental issues?
+      </div>
+      <div class="label">모범 답안</div>
+      <div class="answer-label">Q: Who is more responsible — individuals or governments?</div>
+      <div class="model-answer">
+        I think it has to be both, but if I <span class="idiom">had to pick one</span>, I'd say governments <span class="highlight">bear greater responsibility</span>. Individuals can make changes like recycling or reducing plastic use, but these efforts are <span class="highlight">relatively small-scale</span> compared to the impact of industrial pollution and poor policy-making.<br><br>
+        Governments have the power to <span class="highlight">legislate and enforce</span> meaningful change — things like carbon taxes, renewable energy targets, and <span class="highlight">emissions regulations</span>. Without that kind of <span class="highlight">structural action</span>, individual efforts can only go so far.<br><br>
+        That said, I don't think individuals are <span class="idiom">off the hook</span> entirely. Consumer choices drive demand, and <span class="highlight">collective behaviour</span> does create pressure on both businesses and governments to act. So really, it's a <span class="highlight">shared responsibility</span>.
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">💬 의견 표현 고급 표현 모음</div><div class="block-subtitle">다양하게 돌려쓰기</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="body-text">
+        <b>동의할 때:</b><br>
+        • "I completely agree with that view."<br>
+        • "That's a fair point, and I'd add that..."<br>
+        • "Absolutely — and what's more..."<br><br>
+        <b>부분 동의할 때:</b><br>
+        • "There's some truth in that, but..."<br>
+        • "I see where you're coming from, however..."<br>
+        • "That's one way to look at it, but I'd argue..."<br><br>
+        <b>반대할 때:</b><br>
+        • "I'm not sure I entirely agree..."<br>
+        • "While that may be true in some cases..."<br>
+        • "I'd actually challenge that idea because..."<br><br>
+        <b>확신 없을 때:</b><br>
+        • "It's hard to say for certain, but..."<br>
+        • "I suppose it depends on..."<br>
+        • "I haven't given it much thought before, but..."
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ==================== IDIOMS ==================== -->
+<div class="page" id="page-idioms">
+<div class="main">
+  <div class="sec-title">IELTS 이디엄 마스터</div>
+  <div class="sec-sub">자연스럽게 쓸 수 있는 것만 — 과하면 감점</div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">⚠️ 이디엄 사용 원칙</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="hbox">
+        ✅ <b>좋은 이디엄 사용:</b> 자연스러운 맥락에서 1~2개<br>
+        ❌ <b>나쁜 이디엄 사용:</b> 억지로 끼워넣기, 한 답변에 5개 이상
+      </div>
+      <div class="body-text" style="margin-top:10px">
+        채점관들이 이디엄을 좋아하는 이유는 <b>자연스러운 언어 사용의 증거</b>이기 때문이야. 하지만 어색하게 쓰면 오히려 마이너스. "용감하게 한 개" 전략이 맞아.
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">🟢 안전하게 쓸 수 있는 이디엄 (Level 1)</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="idiom-grid">
+        <div class="idiom-card"><div class="idiom-phrase">mixed feelings</div><div class="idiom-meaning">복잡한 감정 / 두 가지 마음</div><div class="idiom-example">"I have mixed feelings about moving abroad — it's exciting but also scary."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">make the most of</div><div class="idiom-meaning">최대한 활용하다</div><div class="idiom-example">"We tried to make the most of our time there."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">a lot on my plate</div><div class="idiom-meaning">할 일이 너무 많다</div><div class="idiom-example">"I've had a lot on my plate recently with work and studying."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">keep in touch</div><div class="idiom-meaning">연락을 유지하다</div><div class="idiom-example">"Social media helps me keep in touch with old friends."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">cut back on</div><div class="idiom-meaning">줄이다</div><div class="idiom-example">"I've been trying to cut back on screen time."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">switch off</div><div class="idiom-meaning">완전히 쉬다 / 머리를 끄다</div><div class="idiom-example">"It was the first time in months I could truly switch off."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">lift my spirits</div><div class="idiom-meaning">기분을 북돋우다</div><div class="idiom-example">"Listening to music always lifts my spirits."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">get some fresh air</div><div class="idiom-meaning">바깥 공기 마시다 / 환기하다</div><div class="idiom-example">"I try to get some fresh air every day, even if it's just a short walk."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">be into something</div><div class="idiom-meaning">~에 빠져있다</div><div class="idiom-example">"I'm really into documentaries about nature."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">go through the motions</div><div class="idiom-meaning">형식적으로만 하다</div><div class="idiom-example">"Some teachers just go through the motions without really engaging students."</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">🟡 약간 도전적인 이디엄 (Level 2)</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="idiom-grid">
+        <div class="idiom-card"><div class="idiom-phrase">the tip of the iceberg</div><div class="idiom-meaning">빙산의 일각</div><div class="idiom-example">"The pollution we can see is just the tip of the iceberg."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">strike the right balance</div><div class="idiom-meaning">적절한 균형을 맞추다</div><div class="idiom-example">"Governments need to strike the right balance between growth and sustainability."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">off the hook</div><div class="idiom-meaning">책임을 면하다</div><div class="idiom-example">"Individuals shouldn't be let off the hook just because companies pollute more."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">leave a lasting impression</div><div class="idiom-meaning">깊은 인상을 남기다</div><div class="idiom-example">"Great teachers always leave a lasting impression."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">the trip of a lifetime</div><div class="idiom-meaning">일생에 한 번의 여행</div><div class="idiom-example">"Visiting the Galapagos would be the trip of a lifetime."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">straight out of a movie</div><div class="idiom-meaning">영화에서 나온 것 같은</div><div class="idiom-example">"The scenery looked straight out of a movie."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">had my heart set on</div><div class="idiom-meaning">~을 간절히 원해왔다</div><div class="idiom-example">"I've had my heart set on visiting Iceland for years."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">losing touch with</div><div class="idiom-meaning">~와 멀어지다</div><div class="idiom-example">"People are losing touch with nature because of technology."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">the golden ticket</div><div class="idiom-meaning">성공을 보장하는 것</div><div class="idiom-example">"A degree used to be seen as the golden ticket to success."</div></div>
+        <div class="idiom-card"><div class="idiom-phrase">bear greater responsibility</div><div class="idiom-meaning">더 큰 책임을 지다</div><div class="idiom-example">"Governments bear greater responsibility for climate change."</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ==================== TOPICS ==================== -->
+<div class="page" id="page-topics">
+<div class="main">
+  <div class="sec-title">토픽별 배경 상식</div>
+  <div class="sec-sub">모르면 말 못 함 — 미리 알아두기</div>
+
+  <div class="topic-card">
+    <div class="topic-title"><span class="topic-icon">🌱</span> Environment & Climate</div>
+    <div class="topic-points">
+      <span>🌡️ 지구 온난화: 산업혁명 이후 CO₂ 증가 → 기온 1.2°C 상승</span>
+      <span>♻️ 재활용: 많은 나라에서 의무화, 한국은 세계 최고 수준</span>
+      <span>🌊 플라스틱: 매년 800만톤이 바다로 → "Great Pacific Garbage Patch"</span>
+      <span>⚡ 재생에너지: solar, wind, hydroelectric power가 핵심</span>
+      <span>🏭 탄소세(carbon tax): 기업의 탄소 배출에 비용 부과하는 정책</span>
+      <span>🌿 핵심 표현: carbon footprint, sustainable, renewable, biodiversity, emissions</span>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title"><span class="topic-icon">💻</span> Technology & AI</div>
+    <div class="topic-points">
+      <span>🤖 AI 발전: ChatGPT 등장으로 전 산업 변화 중 (2023~현재)</span>
+      <span>📱 소셜미디어: Instagram, TikTok — 특히 청소년 정신건강 영향</span>
+      <span>🏠 재택근무: 코로나 이후 hybrid work가 뉴노멀</span>
+      <span>🔒 개인정보: data privacy가 전 세계적 이슈 (GDPR 등)</span>
+      <span>📺 스트리밍: Netflix, YouTube — 전통 TV를 대체 중</span>
+      <span>🌐 핵심 표현: automation, digital divide, misinformation, algorithm, cyber security</span>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title"><span class="topic-icon">🎓</span> Education</div>
+    <div class="topic-points">
+      <span>📚 온라인 교육: Coursera, Khan Academy — 접근성 대폭 향상</span>
+      <span>💰 교육비: 많은 나라에서 university tuition이 사회 문제</span>
+      <span>🧒 조기 교육: 아시아권 과열 논란 vs 서양의 놀이 중심 교육</span>
+      <span>🌍 유학: 특히 영어권 나라로의 유학이 계속 증가 추세</span>
+      <span>🎯 핵심 표현: critical thinking, life skills, vocational training, literacy, curriculum</span>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title"><span class="topic-icon">🏙️</span> Urban Life & Cities</div>
+    <div class="topic-points">
+      <span>🌆 도시화: 2050년까지 전 세계 인구 68%가 도시 거주 예상</span>
+      <span>🚇 대중교통: 탄소 감소 + 교통 체증 해소 핵심 수단</span>
+      <span>🏗️ 젠트리피케이션: 도시 재개발 → 기존 주민 이주 문제</span>
+      <span>🌳 녹지 공간: 도시 내 공원이 정신 건강에 긍정적 영향</span>
+      <span>🏠 주거 문제: affordable housing이 전 세계 대도시 공통 이슈</span>
+      <span>🎯 핵심 표현: infrastructure, commute, congestion, urban sprawl, gentrification</span>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title"><span class="topic-icon">👨‍👩‍👧</span> Family & Society</div>
+    <div class="topic-points">
+      <span>👴 고령화: 선진국 대부분 고령화 사회 → 복지 비용 증가</span>
+      <span>👶 저출산: 한국 세계 최저 출산율 (0.78, 2022) — 사회적 위기</span>
+      <span>💼 워라밸: work-life balance가 MZ세대의 핵심 가치</span>
+      <span>🌈 다양성: 다문화 사회가 점점 일반화 — 포용성이 중요해짐</span>
+      <span>📱 핵가족화: 1인 가구 증가 → 사회적 고립 문제</span>
+      <span>🎯 핵심 표현: nuclear family, social cohesion, gender equality, wellbeing, isolation</span>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title"><span class="topic-icon">🏃</span> Health & Lifestyle</div>
+    <div class="topic-points">
+      <span>🏋️ 운동: WHO 권장 — 주 150분 moderate exercise</span>
+      <span>🍎 식습관: processed food 증가 → 비만률 전 세계적 상승</span>
+      <span>😴 수면: 7~9시간이 성인 권장 — 수면 부족이 만병의 근원</span>
+      <span>🧘 정신건강: mental health awareness 급격히 증가 (특히 코로나 이후)</span>
+      <span>💊 의료비: 공공의료 vs 민간의료 논쟁 전 세계 공통 이슈</span>
+      <span>🎯 핵심 표현: sedentary lifestyle, obesity, preventive care, burnout, mindfulness</span>
+    </div>
+  </div>
+
+  <div class="topic-card">
+    <div class="topic-title"><span class="topic-icon">✈️</span> Travel & Tourism</div>
+    <div class="topic-points">
+      <span>🌏 오버투어리즘: 베네치아, 바르셀로나 등 과잉 관광 심각</span>
+      <span>🌱 에코투어리즘: 환경 보호와 관광을 결합한 새로운 트렌드</span>
+      <span>✈️ 항공 탄소: 국제 항공이 전체 탄소 배출의 2.5% 차지</span>
+      <span>🏨 에어비앤비: 공유경제 관광의 대표 — 주택 시장 영향 논란</span>
+      <span>🗺️ 뉴질랜드 특이점: "100% Pure New Zealand" 브랜드, 마오리 문화, 어드벤처 스포츠</span>
+      <span>🎯 핵심 표현: overtourism, sustainable tourism, cultural exchange, backpacking, ecotourism</span>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ==================== PRACTICE ==================== -->
+<div class="page" id="page-practice">
+<div class="main">
+  <div class="sec-title">연습 타이머</div>
+  <div class="sec-sub">실전처럼 시간 재고 연습해</div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">⏱️ Part 1 타이머 (20~30초)</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="timer-box">
+        <div class="timer-display" id="timer1">00:30</div>
+        <div class="timer-btns">
+          <button class="timer-btn start" onclick="startTimer(1, 30)">시작</button>
+          <button class="timer-btn stop" onclick="pauseTimer(1)">정지</button>
+          <button class="timer-btn reset" onclick="resetTimer(1, 30)">리셋</button>
+        </div>
+      </div>
+      <div class="body-text" style="margin-top:10px">
+        <b>연습 질문:</b><br>
+        1. Do you prefer living in a city or the countryside? Why?<br>
+        2. How do you usually spend your weekends?<br>
+        3. What kind of music do you enjoy?<br>
+        4. Do you think it's important to learn a foreign language?
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">⏱️ Part 2 준비 타이머 (1분)</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="timer-box">
+        <div class="timer-display" id="timer2">01:00</div>
+        <div class="timer-btns">
+          <button class="timer-btn start" onclick="startTimer(2, 60)">시작</button>
+          <button class="timer-btn stop" onclick="pauseTimer(2)">정지</button>
+          <button class="timer-btn reset" onclick="resetTimer(2, 60)">리셋</button>
+        </div>
+      </div>
+      <div class="hbox gold" style="margin-top:10px">
+        🃏 오늘의 Cue Card:<br><br>
+        <b>Describe a skill you would like to learn.</b><br>
+        • What skill it is<br>
+        • Why you want to learn it<br>
+        • How you would learn it<br>
+        • Explain how it would benefit your life
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">⏱️ Part 2 스피킹 타이머 (2분)</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="timer-box">
+        <div class="timer-display" id="timer3">02:00</div>
+        <div class="timer-btns">
+          <button class="timer-btn start" onclick="startTimer(3, 120)">시작</button>
+          <button class="timer-btn stop" onclick="pauseTimer(3)">정지</button>
+          <button class="timer-btn reset" onclick="resetTimer(3, 120)">리셋</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">⏱️ Part 3 답변 타이머 (45초)</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div class="timer-box">
+        <div class="timer-display" id="timer4">00:45</div>
+        <div class="timer-btns">
+          <button class="timer-btn start" onclick="startTimer(4, 45)">시작</button>
+          <button class="timer-btn stop" onclick="pauseTimer(4)">정지</button>
+          <button class="timer-btn reset" onclick="resetTimer(4, 45)">리셋</button>
+        </div>
+      </div>
+      <div class="body-text" style="margin-top:10px">
+        <b>연습 질문:</b><br>
+        1. Why do people want to learn new skills as adults?<br>
+        2. Do you think online learning is as effective as face-to-face classes?<br>
+        3. Should governments fund adult education programs?
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">📋 셀프 체크리스트</div><div class="block-subtitle">연습 후 스스로 점검</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div id="checklistItems"></div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+// ==================== TABS ====================
+function switchTab(name, el) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+}
+
+// ==================== BLOCKS ====================
+function toggleBlock(header) {
+  const block = header.parentElement;
+  block.classList.toggle('expanded');
+}
+
+// ==================== TIMERS ====================
+const timers = {};
+
+function startTimer(id, seconds) {
+  if (timers[id]) clearInterval(timers[id]);
+  let remaining = parseInt(document.getElementById('timer'+id).textContent.replace(':','')) || seconds;
+  // Parse current display
+  const parts = document.getElementById('timer'+id).textContent.split(':');
+  remaining = parseInt(parts[0]) * 60 + parseInt(parts[1]);
+  if (remaining <= 0) remaining = seconds;
+
+  timers[id] = setInterval(() => {
+    remaining--;
+    if (remaining <= 0) {
+      clearInterval(timers[id]);
+      document.getElementById('timer'+id).textContent = '⏰ 시간!';
+      document.getElementById('timer'+id).style.color = 'var(--accent)';
+      return;
+    }
+    const m = Math.floor(remaining / 60);
+    const s = remaining % 60;
+    document.getElementById('timer'+id).textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    document.getElementById('timer'+id).style.color = remaining <= 10 ? 'var(--accent)' : 'var(--accent2)';
+  }, 1000);
+}
+
+function pauseTimer(id) {
+  clearInterval(timers[id]);
+}
+
+function resetTimer(id, seconds) {
+  clearInterval(timers[id]);
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  document.getElementById('timer'+id).textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  document.getElementById('timer'+id).style.color = 'var(--accent2)';
+}
+
+// ==================== CHECKLIST ====================
+const CHECKLIST = [
+  "침묵 없이 자연스럽게 말했다",
+  "AER/PEEL 구조를 썼다",
+  "이디엄을 1개 이상 사용했다",
+  "고급 어휘를 3개 이상 썼다",
+  "복문(because / although / which)을 사용했다",
+  "답변 길이가 적절했다 (Part1: ~25초, Part2: ~2분)",
+  "마지막 문장으로 wrap-up 했다",
+  "부자연스러운 pause가 없었다"
+];
+
+function renderChecklist() {
+  const saved = JSON.parse(localStorage.getItem('speaking_checklist') || '{}');
+  const container = document.getElementById('checklistItems');
+  container.innerHTML = CHECKLIST.map((item, i) => `
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer" onclick="toggleCheck(${i}, this)">
+      <div id="chk${i}" style="width:22px;height:22px;border:2px solid var(--border);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;background:${saved[i] ? 'var(--green)' : 'transparent'};border-color:${saved[i] ? 'var(--green)' : 'var(--border)'}">${saved[i] ? '✓' : ''}</div>
+      <div style="font-size:13px;color:${saved[i] ? 'var(--muted)' : 'var(--text)'};${saved[i] ? 'text-decoration:line-through' : ''}">${item}</div>
+    </div>`).join('');
+}
+
+function toggleCheck(i, row) {
+  const saved = JSON.parse(localStorage.getItem('speaking_checklist') || '{}');
+  saved[i] = !saved[i];
+  localStorage.setItem('speaking_checklist', JSON.stringify(saved));
+  renderChecklist();
+}
+
+renderChecklist();
+</script>
+
+<!-- ==================== RECORDER ==================== -->
+<div class="page" id="page-recorder">
+<div class="main">
+  <div class="sec-title">🎙️ 말하기 연습 & AI 교정</div>
+  <div class="sec-sub">iPad 받아쓰기로 입력 → AI가 IELTS 기준으로 교정</div>
+
+  <!-- HOW TO USE -->
+  <div style="background:rgba(224,122,47,0.1);border:1px solid var(--speaking);border-radius:12px;padding:14px;margin-bottom:16px">
+    <div style="font-size:11px;font-weight:700;color:var(--speaking);margin-bottom:8px">📌 사용법</div>
+    <div style="font-size:13px;color:#ccc;line-height:1.7">
+      ① 아래 질문 선택<br>
+      ② 타이머 누르고 소리 내어 말하기<br>
+      ③ 텍스트 입력창 누르기 → 키보드 🎤 버튼 → 말하면 자동 입력<br>
+      ④ AI 교정 받기
+    </div>
+  </div>
+
+  <!-- QUESTION SELECTOR -->
+  <div class="block">
+    <div class="block-header" onclick="toggleBlock(this)">
+      <div><div class="block-title">📋 연습 질문 선택</div><div class="block-subtitle">탭해서 질문 고르기</div></div>
+      <div class="block-chevron">▾</div>
+    </div>
+    <div class="block-body">
+      <div style="display:flex;flex-direction:column;gap:8px" id="questionList2"></div>
+    </div>
+  </div>
+
+  <!-- SELECTED QUESTION + TIMER ROW -->
+  <div id="selectedQBox2" style="display:none;margin-bottom:14px">
+    <div style="background:rgba(224,122,47,0.1);border:1px solid var(--speaking);border-radius:12px;padding:14px;margin-bottom:10px">
+      <div style="font-size:10px;font-weight:700;color:var(--speaking);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">선택된 질문</div>
+      <div id="selectedQText2" style="font-size:14px;font-weight:600;line-height:1.5;color:var(--text)"></div>
+    </div>
+
+    <!-- INLINE TIMER -->
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:14px">
+      <div id="practiceTimer" style="font-family:'DM Serif Display',serif;font-size:36px;color:var(--accent2);min-width:80px">0:00</div>
+      <div style="display:flex;flex-direction:column;gap:6px;flex:1">
+        <div style="display:flex;gap:6px">
+          <button onclick="startPracticeTimer()" style="flex:1;padding:8px;background:var(--green);color:white;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer">▶ 시작</button>
+          <button onclick="stopPracticeTimer()" style="flex:1;padding:8px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer">⏸ 정지</button>
+          <button onclick="resetPracticeTimer()" style="flex:1;padding:8px;background:var(--surface2);color:var(--muted);border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer">↺</button>
+        </div>
+        <div id="timerGuide" style="font-size:11px;color:var(--muted);text-align:center"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DICTATION INPUT -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px">
+    <div style="font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px">✏️ 내 답변 입력</div>
+    <textarea id="dictationInput"
+      placeholder="여기를 탭 → 키보드 🎤 버튼 → 말하면 자동 입력&#10;&#10;또는 직접 타이핑해도 됩니다."
+      style="width:100%;min-height:120px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:14px;line-height:1.7;padding:12px;resize:none;outline:none;-webkit-appearance:none"
+      oninput="onDictationInput()"
+    ></textarea>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+      <div id="wordCount" style="font-size:12px;color:var(--muted)">0 단어</div>
+      <button onclick="clearInput()" style="padding:6px 12px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer">지우기</button>
+    </div>
+  </div>
+
+  <!-- AI FEEDBACK BUTTON -->
+  <button onclick="getAIFeedback2()" id="feedbackBtn2" style="width:100%;padding:14px;background:var(--speaking);color:white;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;margin-bottom:14px">
+    🤖 AI 교정 받기
+  </button>
+
+  <!-- AI FEEDBACK RESULT -->
+  <div id="aiFeedbackBox2" style="display:none;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px">
+    <div style="font-size:10px;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:12px">🤖 IELTS AI 피드백</div>
+    <div id="aiFeedbackContent2" style="font-size:13px;line-height:1.85;color:#ccc"></div>
+
+    <!-- SAVE BUTTON -->
+    <button onclick="saveEntry()" style="width:100%;margin-top:14px;padding:10px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer">
+      💾 이 연습 저장하기
+    </button>
+  </div>
+
+  <!-- SAVED ENTRIES -->
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <div style="font-size:13px;font-weight:700">📂 저장된 연습</div>
+      <div style="font-size:11px;color:var(--muted)" id="entryCount2">0개</div>
+    </div>
+    <div id="savedEntries" style="display:flex;flex-direction:column;gap:8px">
+      <div style="text-align:center;padding:20px;color:var(--muted);font-size:13px">아직 저장된 연습이 없어요</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+// ==================== PRACTICE RECORDER (Dictation mode) ====================
+const PRACTICE_QUESTIONS2 = [
+  { part: 'Part 1', time: 30, q: 'Do you prefer living in a city or the countryside? Why?' },
+  { part: 'Part 1', time: 30, q: 'How do you usually spend your weekends?' },
+  { part: 'Part 1', time: 30, q: 'What kind of music do you enjoy listening to?' },
+  { part: 'Part 1', time: 30, q: 'Does the weather affect your mood? How?' },
+  { part: 'Part 1', time: 30, q: 'How has your hometown changed in recent years?' },
+  { part: 'Part 2', time: 120, q: 'Describe a skill you would like to learn. (What / Why / How / Benefit)' },
+  { part: 'Part 2', time: 120, q: 'Describe a memorable trip you have taken. (Where / Who / What / Why)' },
+  { part: 'Part 2', time: 120, q: 'Describe a person who has greatly influenced you. (Who / How / Why)' },
+  { part: 'Part 3', time: 45, q: 'Do you think people rely too much on technology these days?' },
+  { part: 'Part 3', time: 45, q: 'Who is more responsible for environmental problems — individuals or governments?' },
+  { part: 'Part 3', time: 45, q: 'How important is university education in today\'s world?' },
+];
+
+let selectedQ2 = null;
+let practiceTimerInterval = null;
+let practiceSeconds = 0;
+let practiceRunning = false;
+
+function renderQuestions2() {
+  const container = document.getElementById('questionList2');
+  container.innerHTML = PRACTICE_QUESTIONS2.map((q, i) => `
+    <div onclick="selectQuestion2(${i})" id="qitem2_${i}"
+      style="padding:10px 12px;background:var(--surface2);border-radius:8px;cursor:pointer;border:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:3px">
+        <div style="font-size:10px;font-weight:700;color:var(--speaking)">${q.part}</div>
+        <div style="font-size:10px;color:var(--muted)">${q.part === 'Part 2' ? '2분' : q.part === 'Part 3' ? '45초' : '30초'}</div>
+      </div>
+      <div style="font-size:13px;color:var(--text);line-height:1.4">${q.q}</div>
+    </div>`).join('');
+}
+
+function selectQuestion2(i) {
+  selectedQ2 = PRACTICE_QUESTIONS2[i];
+  document.querySelectorAll('[id^="qitem2_"]').forEach(el => el.style.borderColor = 'var(--border)');
+  document.getElementById('qitem2_'+i).style.borderColor = 'var(--speaking)';
+  document.getElementById('selectedQBox2').style.display = 'block';
+  document.getElementById('selectedQText2').textContent = selectedQ2.q;
+  const guide = selectedQ2.part === 'Part 1' ? '목표: 20~30초' : selectedQ2.part === 'Part 2' ? '목표: 1분 30초 ~ 2분' : '목표: 40~50초';
+  document.getElementById('timerGuide').textContent = guide;
+  resetPracticeTimer();
+  // Scroll to timer
+  document.getElementById('selectedQBox2').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function startPracticeTimer() {
+  if (practiceRunning) return;
+  practiceRunning = true;
+  practiceTimerInterval = setInterval(() => {
+    practiceSeconds++;
+    const m = Math.floor(practiceSeconds / 60);
+    const s = practiceSeconds % 60;
+    document.getElementById('practiceTimer').textContent = `${m}:${String(s).padStart(2,'0')}`;
+    // Color warning
+    if (selectedQ2) {
+      const ratio = practiceSeconds / selectedQ2.time;
+      if (ratio >= 1.1) document.getElementById('practiceTimer').style.color = 'var(--accent)';
+      else if (ratio >= 0.85) document.getElementById('practiceTimer').style.color = 'var(--green)';
+      else document.getElementById('practiceTimer').style.color = 'var(--accent2)';
+    }
+  }, 1000);
+}
+
+function stopPracticeTimer() {
+  practiceRunning = false;
+  clearInterval(practiceTimerInterval);
+}
+
+function resetPracticeTimer() {
+  stopPracticeTimer();
+  practiceSeconds = 0;
+  document.getElementById('practiceTimer').textContent = '0:00';
+  document.getElementById('practiceTimer').style.color = 'var(--accent2)';
+}
+
+function onDictationInput() {
+  const text = document.getElementById('dictationInput').value.trim();
+  const words = text ? text.split(/\s+/).length : 0;
+  document.getElementById('wordCount').textContent = words + ' 단어';
+}
+
+function clearInput() {
+  document.getElementById('dictationInput').value = '';
+  document.getElementById('wordCount').textContent = '0 단어';
+  document.getElementById('aiFeedbackBox2').style.display = 'none';
+}
+
+async function getAIFeedback2() {
+  const text = document.getElementById('dictationInput').value.trim();
+  if (!text) { alert('먼저 답변을 입력해주세요!\n\n입력창 탭 → 키보드 🎤 버튼 → 말하기'); return; }
+
+  const btn = document.getElementById('feedbackBtn2');
+  btn.textContent = '⏳ 분석중...';
+  btn.disabled = true;
+
+  const box = document.getElementById('aiFeedbackBox2');
+  const content = document.getElementById('aiFeedbackContent2');
+  box.style.display = 'block';
+  content.innerHTML = '<div style="color:var(--muted);font-style:italic">IELTS Band 6.5 기준으로 분석중...</div>';
+  box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  const question = selectedQ2 ? selectedQ2.q : 'IELTS Speaking practice';
+  const part = selectedQ2 ? selectedQ2.part : 'Speaking';
+
+  const systemPrompt = `You are an expert IELTS Speaking examiner. Student is Korean, targeting Band 6.5. ${part} question: "${question}"
+
+Reply ONLY in Korean using EXACTLY this format with these headers:
+
+[교정된 답변]
+Rewrite their answer naturally in English — fix grammar, upgrade vocabulary, keep their ideas. Make it Band 6.5 level.
+
+[틀린 문법]
+List each error: "원문: X → 교정: Y — 이유: Z"
+
+[어휘 업그레이드]
+List 3 items: "원문 표현 → 더 좋은 표현 (이유)"
+
+[이디엄/고급표현 추천]
+Suggest 1-2 natural idioms or phrases they could add, with example sentence.
+
+[Band 점수 예상]
+Give band estimate (e.g. Band 5.5) with 2-sentence reason.
+
+[다음 연습 포인트]
+One specific, actionable tip for improvement.`;
+
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        system: systemPrompt,
+        messages: [{ role: 'user', content: `My answer: "${text}"` }]
+      })
+    });
+    const data = await res.json();
+    const reply = data.content.map(c => c.text || '').join('');
+
+    const formatted = reply
+      .replace(/\[교정된 답변\]/g, '<div style="font-size:11px;font-weight:700;color:#5fc49a;text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border)">✏️ 교정된 답변</div>')
+      .replace(/\[틀린 문법\]/g, '<div style="font-size:11px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border)">❌ 틀린 문법</div>')
+      .replace(/\[어휘 업그레이드\]/g, '<div style="font-size:11px;font-weight:700;color:var(--accent2);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border)">⬆️ 어휘 업그레이드</div>')
+      .replace(/\[이디엄\/고급표현 추천\]/g, '<div style="font-size:11px;font-weight:700;color:#f0a060;text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border)">💬 이디엄 추천</div>')
+      .replace(/\[Band 점수 예상\]/g, '<div style="font-size:11px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border)">📊 Band 예상</div>')
+      .replace(/\[다음 연습 포인트\]/g, '<div style="font-size:11px;font-weight:700;color:var(--speaking);text-transform:uppercase;letter-spacing:0.06em;margin-top:14px;margin-bottom:6px;padding-bottom:4px;border-bottom:1px solid var(--border)">🎯 다음 포인트</div>')
+      .replace(/\n/g, '<br>');
+
+    content.innerHTML = formatted;
+  } catch(e) {
+    content.innerHTML = '<div style="color:var(--accent)">오류 발생. 다시 시도해주세요.</div>';
+  }
+
+  btn.textContent = '🤖 AI 교정 받기';
+  btn.disabled = false;
+}
+
+function saveEntry() {
+  const text = document.getElementById('dictationInput').value.trim();
+  const feedback = document.getElementById('aiFeedbackContent2').innerText.trim();
+  if (!text) return;
+
+  const saved = JSON.parse(localStorage.getItem('ielts_practice_entries') || '[]');
+  saved.unshift({
+    id: Date.now(),
+    date: new Date().toISOString(),
+    question: selectedQ2 ? selectedQ2.q : '자유 연습',
+    part: selectedQ2 ? selectedQ2.part : '-',
+    answer: text,
+    feedback: feedback,
+    duration: practiceSeconds
+  });
+  if (saved.length > 30) saved.pop();
+  localStorage.setItem('ielts_practice_entries', JSON.stringify(saved));
+  renderSavedEntries();
+  alert('저장됐어! 📂');
+}
+
+function renderSavedEntries() {
+  const saved = JSON.parse(localStorage.getItem('ielts_practice_entries') || '[]');
+  const container = document.getElementById('savedEntries');
+  document.getElementById('entryCount2').textContent = saved.length + '개';
+
+  if (!saved.length) {
+    container.innerHTML = '<div style="text-align:center;padding:20px;color:var(--muted);font-size:13px">아직 저장된 연습이 없어요</div>';
+    return;
+  }
+
+  container.innerHTML = saved.map((r, i) => `
+    <div style="background:var(--surface2);border-radius:10px;padding:12px;border:1px solid var(--border)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px">
+        <div style="font-size:11px;color:var(--speaking);font-weight:700">${r.part} · ${new Date(r.date).toLocaleDateString('ko-KR', {month:'short',day:'numeric'})}</div>
+        <button onclick="deleteEntry(${r.id})" style="background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer">✕</button>
+      </div>
+      <div style="font-size:12px;color:#aaa;margin-bottom:6px;line-height:1.4">${r.question}</div>
+      <div style="font-size:12px;color:#888;line-height:1.5;border-left:2px solid var(--border);padding-left:8px">${r.answer.substring(0, 120)}${r.answer.length > 120 ? '...' : ''}</div>
+    </div>`).join('');
+}
+
+function deleteEntry(id) {
+  const saved = JSON.parse(localStorage.getItem('ielts_practice_entries') || '[]');
+  const updated = saved.filter(r => r.id !== id);
+  localStorage.setItem('ielts_practice_entries', JSON.stringify(updated));
+  renderSavedEntries();
+}
+
+renderQuestions2();
+renderSavedEntries();
+</script>
+</body>
+</html>
