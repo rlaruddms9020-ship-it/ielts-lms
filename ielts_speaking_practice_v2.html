@@ -1,0 +1,1081 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IELTS Speaking Practice</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap');
+
+  :root {
+    --bg: #0f0e17;
+    --surface: #1a1928;
+    --surface2: #232236;
+    --accent: #e8c547;
+    --accent2: #7c6af7;
+    --text: #fffffe;
+    --muted: #a7a9be;
+    --danger: #ef4565;
+    --success: #4cc9a0;
+    --part1: #7c6af7;
+    --part2: #e8c547;
+    --part3: #4cc9a0;
+    --border: rgba(255,255,255,0.07);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(124,106,247,0.12) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .app { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 24px 20px 80px; }
+
+  header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+  }
+  .logo { display: flex; align-items: center; gap: 10px; }
+  .logo-icon {
+    width: 38px; height: 38px;
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    border-radius: 10px;
+    display: grid; place-items: center; font-size: 18px;
+  }
+  .logo-text { font-family: 'DM Serif Display', serif; font-size: 1.2rem; }
+  .logo-sub { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  .exam-countdown {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 10px 16px; text-align: right;
+  }
+  .exam-countdown .days { font-size: 1.5rem; font-weight: 600; color: var(--accent); }
+  .exam-countdown .label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+
+  .nav-tabs {
+    display: flex; gap: 8px; margin-bottom: 28px;
+    background: var(--surface); border-radius: 14px; padding: 6px;
+  }
+  .nav-tab {
+    flex: 1; padding: 10px; border: none; border-radius: 10px;
+    background: transparent; color: var(--muted);
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem; font-weight: 500; transition: all 0.2s;
+  }
+  .nav-tab.active { background: var(--surface2); color: var(--text); }
+  .tab-dot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  .section-title { font-family: 'DM Serif Display', serif; font-size: 1.5rem; margin-bottom: 6px; }
+  .section-sub { color: var(--muted); font-size: 0.85rem; margin-bottom: 24px; }
+
+  .topic-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .topic-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px;
+    cursor: pointer; transition: all 0.2s; position: relative;
+  }
+  .topic-card:hover { border-color: var(--accent2); transform: translateY(-2px); }
+  .topic-num { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 4px; }
+  .topic-name { font-weight: 500; font-size: 0.9rem; }
+  .topic-star { position: absolute; top: 12px; right: 12px; font-size: 0.8rem; }
+  .topic-parts { margin-top: 8px; display: flex; gap: 4px; }
+  .part-pill { font-size: 0.65rem; padding: 2px 7px; border-radius: 20px; font-weight: 600; }
+  .p1 { background: rgba(124,106,247,0.15); color: var(--part1); }
+  .p2 { background: rgba(232,197,71,0.15); color: var(--part2); }
+  .p3 { background: rgba(76,201,160,0.15); color: var(--part3); }
+
+  .daily-btn {
+    width: 100%; padding: 14px;
+    background: linear-gradient(135deg, var(--accent2), #9b8af9);
+    border: none; border-radius: 14px;
+    color: white; font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 600;
+    cursor: pointer; margin-bottom: 28px; transition: opacity 0.2s;
+  }
+  .daily-btn:hover { opacity: 0.9; }
+
+  .back-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 8px 14px;
+    color: var(--muted); font-size: 0.82rem;
+    cursor: pointer; margin-bottom: 20px; transition: all 0.2s;
+  }
+  .back-btn:hover { color: var(--text); border-color: var(--accent2); }
+
+  .practice-topic { font-family: 'DM Serif Display', serif; font-size: 1.8rem; margin-bottom: 20px; }
+
+  .part-selector { display: flex; gap: 8px; margin-bottom: 24px; }
+  .part-btn {
+    padding: 10px 20px; border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: transparent; color: var(--muted);
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    font-weight: 600; font-size: 0.85rem; transition: all 0.2s;
+  }
+  .part-btn[data-part="1"].active { border-color: var(--part1); color: var(--part1); background: rgba(124,106,247,0.1); }
+  .part-btn[data-part="2"].active { border-color: var(--part2); color: var(--part2); background: rgba(232,197,71,0.1); }
+  .part-btn[data-part="3"].active { border-color: var(--part3); color: var(--part3); background: rgba(76,201,160,0.1); }
+
+  .question-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 20px; margin-bottom: 16px;
+  }
+  .question-label { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 10px; }
+  .question-text { font-size: 1.05rem; font-weight: 500; line-height: 1.5; margin-bottom: 12px; }
+  .bullet-points { list-style: none; }
+  .bullet-points li { padding: 6px 0 6px 20px; position: relative; color: var(--muted); font-size: 0.9rem; }
+  .bullet-points li::before { content: '→'; position: absolute; left: 0; color: var(--accent); font-weight: bold; }
+  .q-nav { display: flex; gap: 8px; margin-top: 12px; align-items: center; }
+  .q-nav button {
+    padding: 7px 14px; border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--muted);
+    cursor: pointer; font-size: 0.8rem; transition: all 0.2s;
+  }
+  .q-nav button:hover { border-color: var(--accent2); color: var(--text); }
+
+  /* Timer */
+  .timer-bar {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px 20px; margin-bottom: 16px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .timer-display { font-family: 'DM Serif Display', serif; font-size: 2rem; min-width: 80px; }
+  .timer-display.prep { color: var(--accent); }
+  .timer-display.speak { color: var(--success); }
+  .timer-display.danger { color: var(--danger); }
+  .timer-info { flex: 1; }
+  .timer-phase { font-weight: 600; font-size: 0.9rem; }
+  .timer-sub { font-size: 0.75rem; color: var(--muted); }
+  .timer-progress { height: 4px; background: var(--surface2); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+  .timer-fill { height: 100%; border-radius: 2px; transition: width 1s linear; }
+  .timer-btn {
+    padding: 10px 18px; border-radius: 10px;
+    border: none; background: var(--accent2);
+    color: white; cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600; font-size: 0.85rem; transition: opacity 0.2s;
+  }
+  .timer-btn:hover { opacity: 0.85; }
+
+  /* Vocab */
+  .vocab-section { margin-bottom: 20px; }
+  .vocab-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); margin-bottom: 10px; }
+  .vocab-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+  .vocab-chip {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 20px; padding: 6px 14px;
+    font-size: 0.82rem; cursor: default; position: relative;
+    transition: all 0.2s;
+  }
+  .vocab-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .vocab-chip .tip {
+    display: none; position: absolute; bottom: 120%; left: 50%;
+    transform: translateX(-50%);
+    background: #2a2940; border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 10px;
+    font-size: 0.75rem; white-space: nowrap;
+    color: var(--text); z-index: 100; pointer-events: none;
+  }
+  .vocab-chip:hover .tip { display: block; }
+
+  /* ===== SPEAKING RECORDER ===== */
+  .recorder-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 22px; margin-bottom: 16px;
+  }
+  .recorder-box-title {
+    font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--muted); margin-bottom: 16px;
+  }
+
+  .mic-btn {
+    width: 72px; height: 72px; border-radius: 50%;
+    border: none; cursor: pointer;
+    display: grid; place-items: center;
+    font-size: 1.8rem; margin: 0 auto 16px;
+    transition: all 0.2s; position: relative;
+  }
+  .mic-btn.idle { background: var(--surface2); border: 2px solid var(--border); }
+  .mic-btn.listening {
+    background: var(--danger);
+    box-shadow: 0 0 0 0 rgba(239,69,101,0.4);
+    animation: micPulse 1.2s infinite;
+  }
+  @keyframes micPulse {
+    0% { box-shadow: 0 0 0 0 rgba(239,69,101,0.4); }
+    70% { box-shadow: 0 0 0 16px rgba(239,69,101,0); }
+    100% { box-shadow: 0 0 0 0 rgba(239,69,101,0); }
+  }
+
+  .mic-label { text-align: center; font-size: 0.82rem; color: var(--muted); margin-bottom: 16px; }
+  .mic-label span { color: var(--danger); font-weight: 600; }
+
+  /* Live transcript */
+  .live-transcript {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px;
+    min-height: 80px; font-size: 0.9rem; line-height: 1.7;
+    color: var(--muted); margin-bottom: 12px; position: relative;
+  }
+  .live-transcript .final { color: var(--text); }
+  .live-transcript .interim { color: var(--muted); font-style: italic; }
+  .live-transcript.empty::before { content: 'Your spoken words will appear here in real time...'; color: var(--muted); font-size: 0.85rem; }
+
+  .transcript-actions { display: flex; gap: 8px; margin-bottom: 16px; flex-wrap: wrap; }
+  .action-btn {
+    padding: 8px 16px; border-radius: 10px;
+    border: 1px solid var(--border);
+    background: transparent; color: var(--muted);
+    cursor: pointer; font-size: 0.8rem; font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .action-btn:hover { border-color: var(--accent2); color: var(--text); }
+  .action-btn.primary {
+    background: linear-gradient(135deg, var(--accent2), #9b8af9);
+    border: none; color: white; font-weight: 600;
+  }
+  .action-btn.primary:hover { opacity: 0.9; }
+  .action-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+  /* Saved recordings */
+  .saved-section { margin-top: 16px; border-top: 1px solid var(--border); padding-top: 16px; }
+  .saved-title { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 10px; }
+  .rec-item {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 10px 12px; margin-bottom: 8px;
+  }
+  .rec-part-badge {
+    width: 28px; height: 28px; border-radius: 7px;
+    display: grid; place-items: center;
+    font-size: 0.65rem; font-weight: 700; flex-shrink: 0;
+  }
+  .rec-info { flex: 1; min-width: 0; }
+  .rec-q { font-size: 0.82rem; font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .rec-meta { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+  .rec-del {
+    width: 28px; height: 28px; border-radius: 7px;
+    border: 1px solid var(--border); background: transparent;
+    color: var(--muted); cursor: pointer; font-size: 0.75rem;
+    flex-shrink: 0; transition: all 0.2s;
+  }
+  .rec-del:hover { border-color: var(--danger); color: var(--danger); }
+
+  /* ===== AI FEEDBACK ===== */
+  .feedback-box {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 22px; margin-bottom: 16px;
+  }
+  .feedback-box-title {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 0.75rem; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--muted); margin-bottom: 16px;
+  }
+  .ai-badge {
+    background: linear-gradient(135deg, var(--accent2), var(--accent));
+    color: white; font-size: 0.6rem; font-weight: 700;
+    padding: 2px 7px; border-radius: 20px;
+  }
+
+  .feedback-result { display: none; }
+  .feedback-result.visible { display: block; }
+
+  .criteria-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 16px; }
+  .criterion {
+    background: var(--surface2); border-radius: 12px; padding: 14px;
+  }
+  .criterion-name { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 4px; }
+  .criterion-score { font-family: 'DM Serif Display', serif; font-size: 2rem; }
+  .criterion-bar { height: 3px; background: var(--surface); border-radius: 2px; margin-top: 8px; overflow: hidden; }
+  .criterion-fill { height: 100%; border-radius: 2px; }
+  .score-5 { color: #ef4565; }
+  .score-55 { color: #f4845f; }
+  .score-6 { color: #f4a261; }
+  .score-65 { color: var(--accent); }
+  .score-7 { color: var(--success); }
+  .score-75, .score-8 { color: #4cc9f0; }
+
+  .overall-band {
+    background: linear-gradient(135deg, rgba(124,106,247,0.15), rgba(232,197,71,0.1));
+    border: 1px solid rgba(232,197,71,0.2);
+    border-radius: 14px; padding: 16px; text-align: center; margin-bottom: 16px;
+  }
+  .overall-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+  .overall-score { font-family: 'DM Serif Display', serif; font-size: 3rem; color: var(--accent); }
+  .overall-desc { font-size: 0.82rem; color: var(--muted); }
+
+  .feedback-sections { }
+  .fb-section { margin-bottom: 16px; }
+  .fb-section-title {
+    font-size: 0.78rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+  }
+  .fb-section-body { font-size: 0.88rem; line-height: 1.75; color: var(--muted); }
+  .fb-section-body strong { color: var(--text); }
+  .fb-section-body .highlight { color: var(--accent); font-weight: 600; }
+  .fb-section-body .good { color: var(--success); }
+  .fb-section-body .improve { color: #f4a261; }
+
+  .loading-state {
+    text-align: center; padding: 30px;
+    color: var(--muted); font-size: 0.9rem;
+  }
+  .loading-spinner {
+    width: 32px; height: 32px; border: 3px solid var(--surface2);
+    border-top-color: var(--accent2);
+    border-radius: 50%; animation: spin 0.8s linear infinite;
+    margin: 0 auto 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* All recordings tab */
+  .all-rec-item {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 14px; padding: 16px; margin-bottom: 12px;
+  }
+  .all-rec-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .all-rec-topic { font-weight: 600; font-size: 0.9rem; }
+  .all-rec-question { font-size: 0.82rem; color: var(--muted); margin-bottom: 10px; }
+  .all-rec-transcript {
+    background: var(--surface2); border-radius: 8px; padding: 10px;
+    font-size: 0.8rem; color: var(--muted); margin-bottom: 10px;
+    line-height: 1.6; max-height: 80px; overflow: hidden;
+    position: relative;
+  }
+  .all-rec-transcript::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0;
+    height: 30px;
+    background: linear-gradient(transparent, var(--surface2));
+  }
+
+  /* Progress */
+  .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px; }
+  .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 16px; text-align: center; }
+  .stat-num { font-family: 'DM Serif Display', serif; font-size: 2rem; color: var(--accent); }
+  .stat-label { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+
+  .empty-state { text-align: center; padding: 60px 20px; color: var(--muted); }
+  .empty-icon { font-size: 3rem; margin-bottom: 12px; }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--surface2); border-radius: 3px; }
+</style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="logo">
+      <div class="logo-icon">🎤</div>
+      <div>
+        <div class="logo-text">Speaking Prep</div>
+        <div class="logo-sub">IELTS 2026 · Band 6.5 Target</div>
+      </div>
+    </div>
+    <div class="exam-countdown">
+      <div class="days" id="daysLeft">—</div>
+      <div class="label">Days to Exam</div>
+    </div>
+  </header>
+
+  <div class="nav-tabs">
+    <button class="nav-tab active" onclick="switchTab('practice')" id="tab-practice">
+      <span class="tab-dot" style="background:var(--accent2)"></span>Practice
+    </button>
+    <button class="nav-tab" onclick="switchTab('recordings')" id="tab-recordings">
+      <span class="tab-dot" style="background:var(--accent)"></span>Recordings
+    </button>
+    <button class="nav-tab" onclick="switchTab('progress')" id="tab-progress">
+      <span class="tab-dot" style="background:var(--success)"></span>Progress
+    </button>
+  </div>
+
+  <!-- PRACTICE TAB -->
+  <div class="screen active" id="screen-practice">
+
+    <!-- Topic Selector -->
+    <div id="topic-selector">
+      <div class="section-title">Today's Practice</div>
+      <div class="section-sub">Pick a topic or start today's daily topic</div>
+      <button class="daily-btn" onclick="startDailyTopic()">🎯 Today's Daily Topic</button>
+      <div class="topic-grid" id="topicGrid"></div>
+    </div>
+
+    <!-- Practice View -->
+    <div id="practice-view" style="display:none">
+      <button class="back-btn" onclick="goBack()">← Topics</button>
+      <div class="practice-topic" id="practiceTopicName"></div>
+
+      <div class="part-selector">
+        <button class="part-btn active" data-part="1" onclick="selectPart(1)">Part 1</button>
+        <button class="part-btn" data-part="2" onclick="selectPart(2)">Part 2</button>
+        <button class="part-btn" data-part="3" onclick="selectPart(3)">Part 3</button>
+      </div>
+
+      <div class="question-card">
+        <div class="question-label" id="qLabel">Question</div>
+        <div class="question-text" id="qText"></div>
+        <ul class="bullet-points" id="qBullets" style="display:none"></ul>
+        <div class="q-nav">
+          <button onclick="prevQ()">← Prev</button>
+          <span id="qCounter" style="font-size:0.8rem;color:var(--muted)"></span>
+          <button onclick="nextQ()">Next →</button>
+        </div>
+      </div>
+
+      <!-- Timer (Part 2 only) -->
+      <div class="timer-bar" id="timerBar" style="display:none">
+        <div class="timer-display prep" id="timerDisplay">1:00</div>
+        <div class="timer-info">
+          <div class="timer-phase" id="timerPhase">Preparation Time</div>
+          <div class="timer-sub" id="timerSub">Read the card and prepare your notes</div>
+          <div class="timer-progress"><div class="timer-fill" id="timerFill" style="width:100%;background:var(--accent)"></div></div>
+        </div>
+        <button class="timer-btn" id="timerBtn" onclick="toggleTimer()">Start</button>
+      </div>
+
+      <!-- Vocab -->
+      <div class="vocab-section">
+        <div class="vocab-title">💡 Vocabulary — hover for Korean meaning</div>
+        <div class="vocab-grid" id="vocabGrid"></div>
+      </div>
+
+      <!-- RECORDER -->
+      <div class="recorder-box">
+        <div class="recorder-box-title">🎙️ Speak & Record</div>
+
+        <button class="mic-btn idle" id="micBtn" onclick="toggleSpeech()">🎤</button>
+        <div class="mic-label" id="micLabel">Tap to start speaking</div>
+
+        <div class="live-transcript empty" id="liveTranscript"></div>
+
+        <div class="transcript-actions">
+          <button class="action-btn" onclick="clearTranscript()">Clear</button>
+          <button class="action-btn" onclick="saveRecording()">💾 Save Recording</button>
+          <button class="action-btn primary" id="getFeedbackBtn" onclick="getFeedback()" disabled>
+            Get AI Feedback
+          </button>
+        </div>
+
+        <div class="saved-section" id="savedSection" style="display:none">
+          <div class="saved-title">Saved for this topic</div>
+          <div id="sessionRecList"></div>
+        </div>
+      </div>
+
+      <!-- AI FEEDBACK -->
+      <div class="feedback-box">
+        <div class="feedback-box-title">
+          AI Feedback <span class="ai-badge">IELTS AI</span>
+        </div>
+        <div id="feedbackPlaceholder" style="color:var(--muted);font-size:0.85rem">
+          Speak your answer, then tap "Get AI Feedback" to receive detailed IELTS scoring across all criteria.
+        </div>
+        <div class="feedback-result" id="feedbackResult"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RECORDINGS TAB -->
+  <div class="screen" id="screen-recordings">
+    <div class="section-title">My Recordings</div>
+    <div class="section-sub">All saved practice sessions</div>
+    <div id="allRecList"></div>
+  </div>
+
+  <!-- PROGRESS TAB -->
+  <div class="screen" id="screen-progress">
+    <div class="section-title">My Progress</div>
+    <div class="section-sub">Your journey to Band 6.5 — Exam: 25 May 2026</div>
+    <div class="stats-grid">
+      <div class="stat-card"><div class="stat-num" id="statRec">0</div><div class="stat-label">Recordings</div></div>
+      <div class="stat-card"><div class="stat-num" id="statTopics">0</div><div class="stat-label">Topics Done</div></div>
+      <div class="stat-card"><div class="stat-num" id="statFeedback">0</div><div class="stat-label">AI Feedbacks</div></div>
+    </div>
+    <div id="progressTopics"></div>
+  </div>
+</div>
+
+<script>
+// ===== DATA =====
+const EXAM_DATE = new Date('2026-05-25');
+
+const VOCAB = {
+  "Work & Studies": [{chunk:"have a hectic schedule",meaning:"정신없이 바쁜 일정이다"},{chunk:"juggle work and study",meaning:"일과 공부를 병행하다"},{chunk:"meet a tight deadline",meaning:"빡빡한 마감을 지키다"},{chunk:"burn the midnight oil",meaning:"밤늦게까지 일/공부하다"},{chunk:"work-life balance",meaning:"일과 삶의 균형"},{chunk:"climb the career ladder",meaning:"승진해 올라가다"},{chunk:"be under a lot of pressure",meaning:"많은 압박을 받다"},{chunk:"a nine-to-five job",meaning:"평범한 사무직"},{chunk:"get a promotion",meaning:"승진하다"},{chunk:"work from home",meaning:"재택근무하다"}],
+  "Hometown & Home": [{chunk:"be born and raised in ...",meaning:"~에서 태어나고 자라다"},{chunk:"a bustling city",meaning:"북적이는 도시"},{chunk:"a laid-back atmosphere",meaning:"느긋한 분위기"},{chunk:"cozy and welcoming",meaning:"아늑하고 따뜻한"},{chunk:"in the heart of the city",meaning:"도심 한복판에"},{chunk:"on the outskirts of ...",meaning:"~의 외곽에"},{chunk:"within walking distance",meaning:"걸어갈 수 있는 거리에"},{chunk:"spacious and well-lit",meaning:"넓고 채광이 좋은"},{chunk:"a tight-knit community",meaning:"유대가 끈끈한 공동체"},{chunk:"off the beaten track",meaning:"잘 알려지지 않은"}],
+  "Family & Friends": [{chunk:"a close-knit family",meaning:"사이가 돈독한 가족"},{chunk:"take after someone",meaning:"~을 닮다"},{chunk:"get on like a house on fire",meaning:"매우 친하게 지내다"},{chunk:"a shoulder to cry on",meaning:"기댈 수 있는 사람"},{chunk:"have a lot in common",meaning:"공통점이 많다"},{chunk:"through thick and thin",meaning:"어떤 상황에서도"},{chunk:"bond over ...",meaning:"~을 통해 친해지다"},{chunk:"catch up with ...",meaning:"~와 오랜만에 만나 얘기하다"},{chunk:"drift apart",meaning:"사이가 멀어지다"},{chunk:"see eye to eye",meaning:"의견이 맞다"}],
+  "Technology & AI ⭐": [{chunk:"be glued to my phone",meaning:"휴대폰에서 눈을 못 떼다"},{chunk:"tech-savvy",meaning:"기술에 밝은"},{chunk:"make life a lot easier",meaning:"삶을 훨씬 편하게 해주다"},{chunk:"rely heavily on ...",meaning:"~에 크게 의존하다"},{chunk:"cutting-edge technology",meaning:"최첨단 기술"},{chunk:"save a huge amount of time",meaning:"엄청난 시간을 절약하다"},{chunk:"a double-edged sword",meaning:"양날의 검"},{chunk:"replace human jobs",meaning:"사람의 일자리를 대체하다"},{chunk:"at your fingertips",meaning:"손끝에서 바로 이용 가능한"},{chunk:"digital detox",meaning:"디지털 디톡스"}],
+  "Environment ⭐": [{chunk:"cut down on plastic",meaning:"플라스틱 사용을 줄이다"},{chunk:"eco-friendly lifestyle",meaning:"친환경적인 생활방식"},{chunk:"carbon footprint",meaning:"탄소 발자국"},{chunk:"climate change",meaning:"기후 변화"},{chunk:"go green",meaning:"환경 친화적으로 바뀌다"},{chunk:"single-use plastic",meaning:"일회용 플라스틱"},{chunk:"renewable energy",meaning:"재생 가능 에너지"},{chunk:"pose a threat to the environment",meaning:"환경에 위협이 되다"},{chunk:"sustainable living",meaning:"지속 가능한 삶"},{chunk:"reduce reuse recycle",meaning:"줄이고 재사용하고 재활용하다"}],
+  "Education": [{chunk:"cram for an exam",meaning:"벼락치기 공부하다"},{chunk:"hit the books",meaning:"공부를 시작하다"},{chunk:"a hands-on approach",meaning:"실습 위주의 접근"},{chunk:"broaden your knowledge",meaning:"지식을 넓히다"},{chunk:"lifelong learning",meaning:"평생 학습"},{chunk:"rote memorization",meaning:"암기식 학습"},{chunk:"think outside the box",meaning:"창의적으로 생각하다"},{chunk:"well-rounded education",meaning:"균형 잡힌 교육"},{chunk:"apply theory to practice",meaning:"이론을 실제에 적용하다"},{chunk:"pass with flying colors",meaning:"높은 점수로 통과하다"}],
+  "Food & Cooking": [{chunk:"have a sweet tooth",meaning:"단 것을 좋아하다"},{chunk:"grab a bite to eat",meaning:"가볍게 식사하다"},{chunk:"mouth-watering",meaning:"군침이 도는"},{chunk:"home-cooked meal",meaning:"집밥"},{chunk:"a foodie",meaning:"미식가"},{chunk:"whip up a quick meal",meaning:"후딱 요리하다"},{chunk:"eat on the go",meaning:"이동하면서 먹다"},{chunk:"a balanced diet",meaning:"균형 잡힌 식단"},{chunk:"an acquired taste",meaning:"익숙해져야 좋아지는 맛"},{chunk:"avoid junk food",meaning:"정크 푸드를 피하다"}],
+  "Travel & Holidays": [{chunk:"go off the beaten path",meaning:"잘 알려지지 않은 곳을 가다"},{chunk:"soak up the atmosphere",meaning:"분위기를 만끽하다"},{chunk:"a hidden gem",meaning:"숨겨진 명소"},{chunk:"a once-in-a-lifetime experience",meaning:"평생 한 번뿐인 경험"},{chunk:"travel on a budget",meaning:"저렴하게 여행하다"},{chunk:"immerse yourself in ...",meaning:"~에 완전히 몰입하다"},{chunk:"pack light",meaning:"짐을 가볍게 싸다"},{chunk:"get away from it all",meaning:"모든 걸 벗어나 쉬다"},{chunk:"breathtaking views",meaning:"숨막히는 경치"},{chunk:"jet lag",meaning:"시차 적응"}],
+  "Hobbies & Free Time": [{chunk:"kill time",meaning:"시간을 때우다"},{chunk:"unwind after a long day",meaning:"긴 하루 끝에 긴장을 풀다"},{chunk:"pick up a new hobby",meaning:"새 취미를 갖다"},{chunk:"lose track of time",meaning:"시간 가는 줄 모르다"},{chunk:"a creative outlet",meaning:"창의적인 분출구"},{chunk:"take your mind off things",meaning:"잡생각을 떨치다"},{chunk:"recharge my batteries",meaning:"에너지를 재충전하다"},{chunk:"be hooked on ...",meaning:"~에 푹 빠지다"},{chunk:"have some me-time",meaning:"혼자만의 시간을 갖다"},{chunk:"a productive way to spend time",meaning:"시간을 생산적으로 쓰는 법"}],
+  "Health ⭐": [{chunk:"stay in shape",meaning:"건강을 유지하다"},{chunk:"be under the weather",meaning:"컨디션이 안 좋다"},{chunk:"burnt out",meaning:"번아웃 된"},{chunk:"clear your mind",meaning:"머리를 비우다"},{chunk:"mental well-being",meaning:"정신 건강"},{chunk:"cope with stress",meaning:"스트레스에 대처하다"},{chunk:"get a good night's sleep",meaning:"푹 자다"},{chunk:"work out regularly",meaning:"규칙적으로 운동하다"},{chunk:"eat clean",meaning:"건강하게 먹다"},{chunk:"take a toll on ...",meaning:"~에 악영향을 미치다"}],
+  "Shopping & Money": [{chunk:"on a tight budget",meaning:"빠듯한 예산으로"},{chunk:"splash out on ...",meaning:"~에 돈을 펑펑 쓰다"},{chunk:"a bargain",meaning:"싸게 잘 산 것"},{chunk:"window shopping",meaning:"아이쇼핑"},{chunk:"break the bank",meaning:"큰돈이 들다"},{chunk:"save up for ...",meaning:"~을 위해 돈을 모으다"},{chunk:"impulse buy",meaning:"충동구매"},{chunk:"make ends meet",meaning:"근근이 살아가다"},{chunk:"value for money",meaning:"가격 대비 가치"},{chunk:"cashless society",meaning:"현금 없는 사회"}],
+  "Media": [{chunk:"a real page-turner",meaning:"손에서 놓을 수 없는 책"},{chunk:"binge-watch a series",meaning:"드라마를 몰아보다"},{chunk:"the plot twist",meaning:"반전"},{chunk:"a must-watch",meaning:"꼭 봐야 할 것"},{chunk:"relate to the characters",meaning:"등장인물에 공감하다"},{chunk:"stream music / movies",meaning:"음악/영화를 스트리밍하다"},{chunk:"live up to the hype",meaning:"기대에 부응하다"},{chunk:"based on a true story",meaning:"실화를 바탕으로 한"},{chunk:"my go-to song",meaning:"즐겨 듣는 노래"},{chunk:"get into a band",meaning:"어떤 밴드에 빠지다"}],
+  "Social Media": [{chunk:"scroll through my feed",meaning:"피드를 넘겨보다"},{chunk:"go viral",meaning:"입소문이 나다"},{chunk:"stay connected with ...",meaning:"~와 계속 연락하다"},{chunk:"fake news / misinformation",meaning:"가짜 뉴스"},{chunk:"FOMO",meaning:"소외되는 것에 대한 두려움"},{chunk:"a filter bubble",meaning:"필터 버블"},{chunk:"screen time",meaning:"화면 이용 시간"},{chunk:"influencer culture",meaning:"인플루언서 문화"},{chunk:"a huge following",meaning:"많은 팔로워"},{chunk:"post a story / reel",meaning:"스토리·릴스를 올리다"}],
+  "Weather": [{chunk:"scorching hot",meaning:"찌는 듯이 더운"},{chunk:"freezing cold",meaning:"살이 에일 정도로 추운"},{chunk:"pouring with rain",meaning:"비가 쏟아지는"},{chunk:"crisp and fresh",meaning:"상쾌한"},{chunk:"heatwave",meaning:"폭염"},{chunk:"four distinct seasons",meaning:"뚜렷한 사계절"},{chunk:"lift my mood",meaning:"기분을 좋게 해주다"},{chunk:"unpredictable weather",meaning:"변덕스러운 날씨"},{chunk:"under the sun / in the shade",meaning:"햇볕 아래 / 그늘에서"},{chunk:"pick up an umbrella",meaning:"우산을 챙기다"}],
+  "Transport & City": [{chunk:"the rush hour traffic",meaning:"출퇴근 시간 교통"},{chunk:"stuck in traffic",meaning:"차가 막혀 갇히다"},{chunk:"hop on / hop off",meaning:"버스·지하철에 올라타다·내리다"},{chunk:"get around the city",meaning:"도시를 돌아다니다"},{chunk:"public transport",meaning:"대중교통"},{chunk:"within easy reach",meaning:"가기 쉬운 거리에"},{chunk:"the hustle and bustle",meaning:"북적이는 활기"},{chunk:"air pollution",meaning:"대기 오염"},{chunk:"commute to work",meaning:"출퇴근하다"},{chunk:"a convenient lifestyle",meaning:"편리한 생활"}]
+};
+
+const TOPICS = [
+  {id:1,name:"Work & Studies",vocabKey:"Work & Studies",hot:false,p1:["Do you study or work?","What are your plans for the future?","How much time do you spend on studies each week?","Do you prefer studying in the morning or afternoon?","What changes would you like to see in your school?"],p2:{q:"Describe a job or career you find interesting.",bullets:["What the job is","What skills it requires","Why it appeals to you","And explain how you might pursue it"]},p3:["What factors do people consider when choosing a career?","Is salary the main reason people choose certain jobs?","What are the advantages of working from home?","Do you think job satisfaction is more important than salary?"]},
+  {id:2,name:"Hometown & Home",vocabKey:"Hometown & Home",hot:false,p1:["Where are you living now?","What do you like most about where you live?","Has your city changed significantly in recent years?","Do you plan to stay in this area in the future?","How is your neighbourhood?"],p2:{q:"Describe the place where you live.",bullets:["Where it is","What it looks like","What you like most about it","And explain whether you plan to stay there"]},p3:["Why do people move to different cities?","What makes a good neighbourhood?","Do you think rural or urban living is better?","How has urbanisation affected communities?"]},
+  {id:3,name:"Family & Friends",vocabKey:"Family & Friends",hot:false,p1:["Do you have a friend you have known for a long time?","What do you usually do with your friends?","How important are friends to you?","Do you prefer to spend time with one friend or a group?","Do you often go out with your friends?"],p2:{q:"Describe a good friend who is important to you.",bullets:["Who he/she is","How/where you got to know him/her","How long you have known each other","And explain why he/she is important to you"]},p3:["Is it better for children to have a few close friends or many casual friends?","How do friendships change as people get older?","Do you think online friendships are as valuable as face-to-face ones?","What qualities make a good friend?"]},
+  {id:4,name:"Technology & AI ⭐",vocabKey:"Technology & AI ⭐",hot:true,p1:["Do you use technology a lot in your daily life?","What kind of technology do you use most?","Do you think children use technology too much?","What technology can't you live without?"],p2:{q:"Describe a piece of technology that has changed your life.",bullets:["What the technology is","When you started using it","How it has affected your daily life","And explain whether the change has been mostly positive or negative"]},p3:["Will AI replace human jobs in the future?","What are the advantages and disadvantages of AI?","How has technology changed the way people communicate?","Should the government regulate the use of AI?"]},
+  {id:5,name:"Environment ⭐",vocabKey:"Environment ⭐",hot:true,p1:["Do you do anything to protect the environment?","Have you ever taken part in any environmental activities?","Do people in your country care about the environment?"],p2:{q:"Describe a person who encouraged you to protect the environment.",bullets:["Who he/she is","How he/she encouraged you","What he/she encouraged you to do","And explain how you feel about this person"]},p3:["What can governments do to protect the environment?","Is it individuals or governments who should take more responsibility?","Do you think people are doing enough to address climate change?","What are the most serious environmental problems today?"]},
+  {id:6,name:"Education",vocabKey:"Education",hot:false,p1:["What is your favourite subject?","Do you think education is important?","How do you prefer to study?","Did you enjoy school when you were younger?"],p2:{q:"Describe a teacher who has had a great influence on you.",bullets:["Who this person is","When and where you met him/her","What qualities he/she has","And explain why this teacher influenced you so much"]},p3:["Should education be free for everyone?","What are the advantages of online learning?","Do you think schools should focus more on practical skills?","How important is creativity in education?"]},
+  {id:7,name:"Food & Cooking",vocabKey:"Food & Cooking",hot:false,p1:["What is your favourite food?","Do you prefer home-cooked food or eating out?","Do you enjoy cooking?","How has your diet changed as you've grown older?"],p2:{q:"Describe an unusual meal you had.",bullets:["When you had it","Where you had it","Who you had it with","And explain why it was unusual"]},p3:["How has food culture changed in your country?","Do you think fast food is a serious problem?","Is it important for children to learn to cook?","How does food reflect culture and identity?"]},
+  {id:8,name:"Travel & Holidays",vocabKey:"Travel & Holidays",hot:false,p1:["Do you like travelling?","Where did you last travel to?","Do you prefer to travel alone or with others?","What do you think is the best way to travel?"],p2:{q:"Describe a trip you would like to make again.",bullets:["Where and when you went","Who you made the trip with","What you did during the trip","And explain why you would like to make the trip again"]},p3:["Why do people like travelling?","What should we prepare before a trip?","Why do some people prefer to travel in their own country rather than go abroad?","How has tourism changed in recent years?"]},
+  {id:9,name:"Hobbies & Free Time",vocabKey:"Hobbies & Free Time",hot:false,p1:["Do you have any hobbies?","Did you have any hobbies when you were a child?","How do you usually spend your free time?","Do you have the same hobbies as your family members?"],p2:{q:"Describe a hobby you enjoy.",bullets:["What the hobby is","When you started doing it","How often you do it","And explain why you enjoy it"]},p3:["Why is it important to have hobbies?","Have people's hobbies changed compared to the past?","Do you think hobbies can become careers?","How do hobbies benefit mental health?"]},
+  {id:10,name:"Health ⭐",vocabKey:"Health ⭐",hot:true,p1:["Do you do anything to stay healthy?","How important is exercise to you?","Do you think people in your country are healthy?","What do you do when you feel stressed?"],p2:{q:"Describe a time when you successfully kept fit and healthy.",bullets:["What you did","When this was","Why you decided to do it","And explain how you felt about the experience"]},p3:["What can governments do to encourage people to be healthier?","Why do some people find it difficult to maintain a healthy lifestyle?","Do you think mental health is as important as physical health?","How has awareness of health changed in recent years?"]},
+  {id:11,name:"Shopping & Money",vocabKey:"Shopping & Money",hot:false,p1:["Do you like shopping?","Do you often buy things online?","How much do you spend on shopping each month?","Do you prefer shopping alone or with others?"],p2:{q:"Describe an item on which you spent more than expected.",bullets:["What it is","How much you spent on it","Why you bought it","And explain why you spent more than expected"]},p3:["Why do people buy things they don't need?","Do you think it is important to save money?","How has the way people shop changed in recent years?","Does advertising influence people's spending habits?"]},
+  {id:12,name:"Media",vocabKey:"Media",hot:false,p1:["Do you like reading?","Do you prefer paper books or e-books?","What kind of films do you enjoy?","How much time do you spend watching TV?"],p2:{q:"Describe a book you read that you found useful.",bullets:["What it is","When you read it","Why you think it is useful","And explain how you felt about it"]},p3:["What types of books do young people like to read?","Is a good storyline important for a movie?","How has the internet changed the way people consume media?","Do you think newspapers will disappear in the future?"]},
+  {id:13,name:"Social Media",vocabKey:"Social Media",hot:false,p1:["Do you use social media?","How much time do you spend on social media each day?","What do you usually post about?","Do you prefer to communicate face-to-face or via social media?"],p2:{q:"Describe a time you saw something interesting on social media.",bullets:["When it was","Where you saw it","What you saw","And explain why you think it was interesting"]},p3:["Why do people like to use social media?","What are the advantages and disadvantages of social media?","Do you think social media has made people more or less sociable?","How does fake news spread through social media?"]},
+  {id:14,name:"Weather",vocabKey:"Weather",hot:false,p1:["What is the weather like in your hometown?","What kind of weather do you prefer?","Has the weather in your country changed in recent years?","Does the weather affect your mood?"],p2:{q:"Describe a time when extreme weather affected your plans.",bullets:["When it happened","What the weather was like","How it affected your plans","And explain how you felt about it"]},p3:["Do you think weather affects people's personalities?","How does climate change affect weather patterns?","What can people do to adapt to extreme weather?","Is weather forecasting accurate enough nowadays?"]},
+  {id:15,name:"Transport & City",vocabKey:"Transport & City",hot:false,p1:["Is the city where you live crowded?","How do you usually get around?","Is there good public transport where you live?","What problems does traffic cause in your city?"],p2:{q:"Describe a city that you think is very interesting.",bullets:["Where it is","What it is famous for","How you knew this city","And explain why you think it is very interesting"]},p3:["What advantages can tourism bring to a city?","Why do some young people like to live in cities?","What are the disadvantages of living in a very famous city?","How can cities reduce traffic congestion?"]}
+];
+
+// ===== STATE =====
+let currentTopic = null;
+let currentPart = 1;
+let currentQIdx = 0;
+let recognition = null;
+let isListening = false;
+let finalTranscript = '';
+let interimTranscript = '';
+let recordings = JSON.parse(localStorage.getItem('ielts_recs') || '[]');
+let feedbackCount = parseInt(localStorage.getItem('ielts_fb_count') || '0');
+
+// Timer
+let timerInterval = null;
+let timerPhase = 'prep';
+let timerSecs = 60;
+let timerRunning = false;
+
+// ===== INIT =====
+function init() {
+  updateCountdown();
+  renderTopicGrid();
+  initSpeechRecognition();
+  setInterval(updateCountdown, 60000);
+}
+
+function updateCountdown() {
+  const diff = Math.ceil((EXAM_DATE - new Date()) / 86400000);
+  document.getElementById('daysLeft').textContent = Math.max(0, diff);
+}
+
+function renderTopicGrid() {
+  document.getElementById('topicGrid').innerHTML = TOPICS.map(t => `
+    <div class="topic-card" onclick="startTopic(${t.id})">
+      ${t.hot ? '<span class="topic-star">⭐</span>' : ''}
+      <div class="topic-num">Topic ${t.id}</div>
+      <div class="topic-name">${t.name}</div>
+      <div class="topic-parts">
+        <span class="part-pill p1">P1</span>
+        <span class="part-pill p2">P2</span>
+        <span class="part-pill p3">P3</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function startDailyTopic() {
+  const day = Math.floor((new Date() - new Date(new Date().getFullYear(),0,0)) / 86400000);
+  startTopic(TOPICS[day % TOPICS.length].id);
+}
+
+function startTopic(id) {
+  currentTopic = TOPICS.find(t => t.id === id);
+  currentPart = 1; currentQIdx = 0;
+  document.getElementById('topic-selector').style.display = 'none';
+  document.getElementById('practice-view').style.display = 'block';
+  document.getElementById('practiceTopicName').textContent = currentTopic.name;
+  document.querySelectorAll('.part-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('[data-part="1"]').classList.add('active');
+  renderQuestion(); renderVocab(); renderSessionRecs();
+  clearTranscript();
+  document.getElementById('feedbackResult').classList.remove('visible');
+  document.getElementById('feedbackResult').innerHTML = '';
+  document.getElementById('feedbackPlaceholder').style.display = 'block';
+  document.getElementById('timerBar').style.display = 'none';
+}
+
+function goBack() {
+  stopSpeech(); stopTimer();
+  document.getElementById('topic-selector').style.display = 'block';
+  document.getElementById('practice-view').style.display = 'none';
+}
+
+function selectPart(p) {
+  currentPart = p; currentQIdx = 0;
+  document.querySelectorAll('.part-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`[data-part="${p}"]`).classList.add('active');
+  renderQuestion(); stopTimer();
+  document.getElementById('timerBar').style.display = p === 2 ? 'flex' : 'none';
+  if (p === 2) resetTimer();
+}
+
+function renderQuestion() {
+  const lbl = document.getElementById('qLabel');
+  const txt = document.getElementById('qText');
+  const bul = document.getElementById('qBullets');
+  const ctr = document.getElementById('qCounter');
+  if (currentPart === 1) {
+    const qs = currentTopic.p1;
+    lbl.textContent = `Part 1 · Q${currentQIdx+1} of ${qs.length}`;
+    txt.textContent = qs[currentQIdx];
+    bul.style.display = 'none';
+    ctr.textContent = `${currentQIdx+1} / ${qs.length}`;
+  } else if (currentPart === 2) {
+    lbl.textContent = 'Part 2 · Cue Card';
+    txt.textContent = currentTopic.p2.q;
+    bul.innerHTML = currentTopic.p2.bullets.map(b => `<li>${b}</li>`).join('');
+    bul.style.display = 'block';
+    ctr.textContent = '1 / 1';
+  } else {
+    const qs = currentTopic.p3;
+    lbl.textContent = `Part 3 · Q${currentQIdx+1} of ${qs.length}`;
+    txt.textContent = qs[currentQIdx];
+    bul.style.display = 'none';
+    ctr.textContent = `${currentQIdx+1} / ${qs.length}`;
+  }
+}
+
+function nextQ() {
+  const max = currentPart === 1 ? currentTopic.p1.length : currentPart === 3 ? currentTopic.p3.length : 1;
+  if (currentQIdx < max - 1) { currentQIdx++; renderQuestion(); }
+}
+function prevQ() {
+  if (currentQIdx > 0) { currentQIdx--; renderQuestion(); }
+}
+
+function renderVocab() {
+  const chunks = VOCAB[currentTopic.vocabKey] || [];
+  document.getElementById('vocabGrid').innerHTML = chunks.map(v => `
+    <div class="vocab-chip">${v.chunk}<span class="tip">${v.meaning}</span></div>
+  `).join('');
+}
+
+// ===== SPEECH RECOGNITION =====
+function initSpeechRecognition() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    document.getElementById('micLabel').textContent = '⚠️ Speech recognition not supported. Use Chrome browser.';
+    document.getElementById('micBtn').disabled = true;
+    return;
+  }
+  recognition = new SpeechRecognition();
+  recognition.continuous = true;
+  recognition.interimResults = true;
+  recognition.lang = 'en-US';
+
+  recognition.onresult = (e) => {
+    interimTranscript = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      if (e.results[i].isFinal) {
+        finalTranscript += e.results[i][0].transcript + ' ';
+      } else {
+        interimTranscript += e.results[i][0].transcript;
+      }
+    }
+    updateTranscriptDisplay();
+  };
+
+  recognition.onerror = (e) => {
+    if (e.error === 'not-allowed') {
+      document.getElementById('micLabel').textContent = '⚠️ Microphone blocked. Please allow microphone access in browser settings.';
+    }
+    stopSpeech();
+  };
+
+  recognition.onend = () => {
+    if (isListening) {
+      try { recognition.start(); } catch(e) {}
+    }
+  };
+}
+
+function toggleSpeech() {
+  if (isListening) {
+    stopSpeech();
+  } else {
+    startSpeech();
+  }
+}
+
+function startSpeech() {
+  if (!recognition) return;
+  try {
+    recognition.start();
+    isListening = true;
+    document.getElementById('micBtn').className = 'mic-btn listening';
+    document.getElementById('micLabel').innerHTML = 'Listening... <span>tap to stop</span>';
+    const lt = document.getElementById('liveTranscript');
+    lt.classList.remove('empty');
+  } catch(e) {}
+}
+
+function stopSpeech() {
+  if (!recognition) return;
+  isListening = false;
+  try { recognition.stop(); } catch(e) {}
+  document.getElementById('micBtn').className = 'mic-btn idle';
+  document.getElementById('micLabel').textContent = finalTranscript ? 'Done! Review your transcript below.' : 'Tap to start speaking';
+  interimTranscript = '';
+  updateTranscriptDisplay();
+  // Enable feedback button if there's text
+  document.getElementById('getFeedbackBtn').disabled = !finalTranscript.trim();
+}
+
+function updateTranscriptDisplay() {
+  const el = document.getElementById('liveTranscript');
+  if (!finalTranscript && !interimTranscript) {
+    el.classList.add('empty');
+    el.innerHTML = '';
+    return;
+  }
+  el.classList.remove('empty');
+  el.innerHTML = `<span class="final">${finalTranscript}</span><span class="interim">${interimTranscript}</span>`;
+}
+
+function clearTranscript() {
+  finalTranscript = ''; interimTranscript = '';
+  stopSpeech();
+  const el = document.getElementById('liveTranscript');
+  el.classList.add('empty');
+  el.innerHTML = '';
+  document.getElementById('getFeedbackBtn').disabled = true;
+}
+
+function saveRecording() {
+  if (!finalTranscript.trim()) { alert('Please speak first before saving.'); return; }
+  const now = new Date();
+  const q = currentPart === 2 ? currentTopic.p2.q : currentPart === 1 ? currentTopic.p1[currentQIdx] : currentTopic.p3[currentQIdx];
+  const rec = {
+    id: Date.now(),
+    topicName: currentTopic.name,
+    part: currentPart,
+    question: q,
+    transcript: finalTranscript.trim(),
+    date: now.toLocaleDateString(),
+    time: now.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'})
+  };
+  recordings.unshift(rec);
+  localStorage.setItem('ielts_recs', JSON.stringify(recordings.slice(0, 100)));
+  renderSessionRecs();
+  renderAllRecs();
+  updateProgress();
+  alert('✅ Saved! You can find it in the Recordings tab.');
+}
+
+function renderSessionRecs() {
+  const topicRecs = recordings.filter(r => r.topicName === currentTopic?.name).slice(0, 5);
+  const section = document.getElementById('savedSection');
+  const list = document.getElementById('sessionRecList');
+  if (topicRecs.length === 0) { section.style.display = 'none'; return; }
+  section.style.display = 'block';
+  list.innerHTML = topicRecs.map(r => `
+    <div class="rec-item">
+      <div class="rec-part-badge" style="background:rgba(124,106,247,0.15);color:var(--part${r.part})">P${r.part}</div>
+      <div class="rec-info">
+        <div class="rec-q">${r.question.length > 55 ? r.question.substring(0,55)+'...' : r.question}</div>
+        <div class="rec-meta">${r.date} ${r.time}</div>
+      </div>
+      <button class="rec-del" onclick="deleteRec(${r.id})">✕</button>
+    </div>
+  `).join('');
+}
+
+function deleteRec(id) {
+  recordings = recordings.filter(r => r.id !== id);
+  localStorage.setItem('ielts_recs', JSON.stringify(recordings));
+  renderSessionRecs(); renderAllRecs(); updateProgress();
+}
+
+// ===== AI FEEDBACK =====
+async function getFeedback() {
+  const text = finalTranscript.trim();
+  if (!text) { alert('Please speak an answer first.'); return; }
+
+  const btn = document.getElementById('getFeedbackBtn');
+  btn.disabled = true;
+  btn.textContent = 'Analysing...';
+
+  const placeholder = document.getElementById('feedbackPlaceholder');
+  const result = document.getElementById('feedbackResult');
+  placeholder.style.display = 'none';
+  result.classList.add('visible');
+  result.innerHTML = `<div class="loading-state"><div class="loading-spinner"></div>Scoring your IELTS response...</div>`;
+
+  const partNames = {1:'Part 1 (Short Answer)', 2:'Part 2 (Long Turn — 2 minute cue card)', 3:'Part 3 (Discussion)'};
+  const question = currentPart === 2 ? currentTopic.p2.q : currentPart === 1 ? currentTopic.p1[currentQIdx] : currentTopic.p3[currentQIdx];
+
+  const prompt = `You are a strict but helpful IELTS Speaking examiner. Analyse the candidate's spoken answer and provide detailed Band 6.5-level feedback.
+
+Topic: ${currentTopic.name}
+Part: ${partNames[currentPart]}
+Question: "${question}"
+Candidate's spoken answer (transcribed from speech): "${text}"
+
+Give your full assessment in this EXACT JSON format with no extra text:
+{
+  "fluency": 6.5,
+  "lexical": 6.0,
+  "grammar": 6.5,
+  "pronunciation": 6.0,
+  "overall": 6.5,
+  "fluency_comment": "2-3 sentences about fluency and coherence — how smoothly they spoke, whether ideas connected logically, any hesitations or fillers",
+  "lexical_comment": "2-3 sentences about vocabulary — word choice quality, use of collocations, any awkward or repeated words, suggestions for better words they could have used",
+  "grammar_comment": "2-3 sentences about grammar — specific errors found in the transcript, correct versions, range of structures used",
+  "pronunciation_comment": "2-3 sentences about pronunciation and clarity — based on the transcript, note any word choices that suggest pronunciation difficulty, rhythm issues, or suggest areas to focus on",
+  "strengths": "2-3 specific strengths with exact phrases from their answer",
+  "top_improvements": "The 3 most impactful improvements they should make, with examples",
+  "model_sentence": "Take their weakest sentence and rewrite it at Band 7.0 level, showing exactly how to improve it"
+}
+
+Score fairly. Band 6.5 = mostly fluent, good vocabulary range, some errors that don't impede understanding. Be specific — reference their actual words.`;
+
+  try {
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{role: 'user', content: prompt}]
+      })
+    });
+    const data = await response.json();
+    const rawText = data.content.map(i => i.text || '').join('');
+    const jsonMatch = rawText.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) throw new Error('No JSON');
+    const fb = JSON.parse(jsonMatch[0]);
+    renderFeedbackResult(fb);
+    feedbackCount++;
+    localStorage.setItem('ielts_fb_count', feedbackCount);
+    updateProgress();
+  } catch(e) {
+    result.innerHTML = `<div style="color:var(--danger);font-size:0.88rem">⚠️ Could not get feedback. Please try again.</div>`;
+  }
+
+  btn.disabled = false;
+  btn.textContent = 'Get AI Feedback';
+}
+
+function renderFeedbackResult(fb) {
+  const result = document.getElementById('feedbackResult');
+  const criteria = [
+    {key:'fluency', label:'Fluency & Coherence', comment: fb.fluency_comment},
+    {key:'lexical', label:'Vocabulary', comment: fb.lexical_comment},
+    {key:'grammar', label:'Grammar', comment: fb.grammar_comment},
+    {key:'pronunciation', label:'Pronunciation', comment: fb.pronunciation_comment}
+  ];
+
+  result.innerHTML = `
+    <div class="overall-band">
+      <div class="overall-label">Overall Band Score</div>
+      <div class="overall-score ${scoreClass(fb.overall)}">${fb.overall}</div>
+      <div class="overall-desc">${bandDesc(fb.overall)}</div>
+    </div>
+
+    <div class="criteria-grid">
+      ${criteria.map(c => `
+        <div class="criterion">
+          <div class="criterion-name">${c.label}</div>
+          <div class="criterion-score ${scoreClass(fb[c.key])}">${fb[c.key]}</div>
+          <div class="criterion-bar"><div class="criterion-fill" style="width:${(fb[c.key]/9)*100}%;background:${barColor(fb[c.key])}"></div></div>
+        </div>
+      `).join('')}
+    </div>
+
+    <div class="feedback-sections">
+      ${criteria.map(c => `
+        <div class="fb-section">
+          <div class="fb-section-title" style="color:${barColor(fb[c.key])}">
+            ${criterionIcon(c.key)} ${c.label} — ${fb[c.key]}
+          </div>
+          <div class="fb-section-body">${c.comment}</div>
+        </div>
+      `).join('')}
+
+      <div class="fb-section">
+        <div class="fb-section-title" style="color:var(--success)">✓ What you did well</div>
+        <div class="fb-section-body">${fb.strengths}</div>
+      </div>
+
+      <div class="fb-section">
+        <div class="fb-section-title" style="color:var(--accent)">↑ Top 3 improvements</div>
+        <div class="fb-section-body">${fb.top_improvements}</div>
+      </div>
+
+      <div class="fb-section" style="background:rgba(124,106,247,0.06);border:1px solid rgba(124,106,247,0.15);border-radius:12px;padding:14px">
+        <div class="fb-section-title" style="color:var(--accent2)">✏️ Band 7.0 rewrite</div>
+        <div class="fb-section-body">${fb.model_sentence}</div>
+      </div>
+    </div>
+  `;
+}
+
+function scoreClass(s) {
+  if (s >= 7.5) return 'score-75';
+  if (s >= 7) return 'score-7';
+  if (s >= 6.5) return 'score-65';
+  if (s >= 6) return 'score-6';
+  if (s >= 5.5) return 'score-55';
+  return 'score-5';
+}
+
+function barColor(s) {
+  if (s >= 7) return 'var(--success)';
+  if (s >= 6.5) return 'var(--accent)';
+  if (s >= 6) return '#f4a261';
+  return 'var(--danger)';
+}
+
+function bandDesc(s) {
+  if (s >= 7) return 'Good user — well above target!';
+  if (s >= 6.5) return 'Competent user — right on target!';
+  if (s >= 6) return 'Competent user — almost there';
+  return 'Modest user — keep practising!';
+}
+
+function criterionIcon(k) {
+  return {fluency:'🗣️', lexical:'📚', grammar:'✍️', pronunciation:'🔊'}[k] || '•';
+}
+
+// ===== TIMER =====
+function resetTimer() {
+  clearInterval(timerInterval);
+  timerRunning = false; timerPhase = 'prep'; timerSecs = 60;
+  updateTimerDisplay();
+  document.getElementById('timerBtn').textContent = 'Start';
+  document.getElementById('timerPhase').textContent = 'Preparation Time';
+  document.getElementById('timerSub').textContent = 'Read the card and prepare your notes';
+  document.getElementById('timerDisplay').className = 'timer-display prep';
+  document.getElementById('timerFill').style.width = '100%';
+  document.getElementById('timerFill').style.background = 'var(--accent)';
+}
+
+function toggleTimer() {
+  if (timerRunning) { resetTimer(); return; }
+  timerRunning = true;
+  document.getElementById('timerBtn').textContent = 'Reset';
+  const total = timerPhase === 'prep' ? 60 : 120;
+  timerInterval = setInterval(() => {
+    timerSecs--;
+    updateTimerDisplay();
+    document.getElementById('timerFill').style.width = (timerSecs / total * 100) + '%';
+    if (timerSecs <= 10 && timerPhase === 'speak') {
+      document.getElementById('timerDisplay').className = 'timer-display danger';
+      document.getElementById('timerFill').style.background = 'var(--danger)';
+    }
+    if (timerSecs <= 0) {
+      clearInterval(timerInterval); timerRunning = false;
+      if (timerPhase === 'prep') {
+        timerPhase = 'speak'; timerSecs = 120;
+        document.getElementById('timerPhase').textContent = '🎤 Speak Now!';
+        document.getElementById('timerSub').textContent = 'Speak for 2 minutes without stopping';
+        document.getElementById('timerDisplay').className = 'timer-display speak';
+        document.getElementById('timerFill').style.background = 'var(--success)';
+        document.getElementById('timerFill').style.width = '100%';
+        document.getElementById('timerBtn').textContent = 'Start Speaking Timer';
+        updateTimerDisplay();
+      } else {
+        document.getElementById('timerPhase').textContent = "Time's Up!";
+        document.getElementById('timerSub').textContent = 'Great effort! Now get AI feedback.';
+      }
+    }
+  }, 1000);
+}
+
+function stopTimer() { clearInterval(timerInterval); timerRunning = false; }
+
+function updateTimerDisplay() {
+  const m = Math.floor(timerSecs / 60);
+  const s = timerSecs % 60;
+  document.getElementById('timerDisplay').textContent = `${m}:${s.toString().padStart(2,'0')}`;
+}
+
+// ===== ALL RECORDINGS =====
+function renderAllRecs() {
+  const el = document.getElementById('allRecList');
+  if (recordings.length === 0) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">🎙️</div><p>No recordings yet.<br>Go to Practice and speak your answers!</p></div>';
+    return;
+  }
+  el.innerHTML = recordings.map(r => `
+    <div class="all-rec-item">
+      <div class="all-rec-header">
+        <div class="all-rec-topic">${r.topicName}</div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <span style="font-size:0.7rem;font-weight:700;color:var(--part${r.part})">Part ${r.part}</span>
+          <span style="font-size:0.72rem;color:var(--muted)">${r.date} ${r.time}</span>
+          <button class="rec-del" onclick="deleteRec(${r.id})">✕</button>
+        </div>
+      </div>
+      <div class="all-rec-question">${r.question}</div>
+      ${r.transcript ? `<div class="all-rec-transcript">${r.transcript}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+// ===== PROGRESS =====
+function updateProgress() {
+  document.getElementById('statRec').textContent = recordings.length;
+  const uniqueTopics = [...new Set(recordings.map(r => r.topicName))].length;
+  document.getElementById('statTopics').textContent = uniqueTopics;
+  document.getElementById('statFeedback').textContent = feedbackCount;
+
+  const counts = {};
+  recordings.forEach(r => counts[r.topicName] = (counts[r.topicName]||0)+1);
+  const container = document.getElementById('progressTopics');
+  if (Object.keys(counts).length === 0) {
+    container.innerHTML = '<p style="color:var(--muted);font-size:0.85rem">No sessions yet. Start practising!</p>';
+    return;
+  }
+  container.innerHTML = `
+    <div style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-bottom:12px">Topics Practised</div>
+    ${Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([topic,count])=>`
+      <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">
+        <div style="flex:1;font-size:0.88rem">${topic}</div>
+        <div style="font-size:0.8rem;color:var(--muted);background:var(--surface2);padding:3px 10px;border-radius:20px">${count} saved</div>
+      </div>
+    `).join('')}
+  `;
+}
+
+// ===== TABS =====
+function switchTab(tab) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('screen-'+tab).classList.add('active');
+  document.getElementById('tab-'+tab).classList.add('active');
+  if (tab === 'recordings') renderAllRecs();
+  if (tab === 'progress') updateProgress();
+}
+
+init();
+</script>
+</body>
+</html>
